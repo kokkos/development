@@ -14,13 +14,13 @@
 
 - Do we allow more flexibility?
 
-- Document and CMake check the versions. 
+- Document and CMake check the versions.
 
 - One big table is nice to explain the versions required by each package
 
-- Coordination may matter. Core and Kernels talk to each other. Coherency among 5+ can be problematic. 
+- Coordination may matter. Core and Kernels talk to each other. Coherency among 5+ can be problematic.
 
-- Lock step? Primary versioning. Release cycle should be synchrnoized. If not, bad for packaging. 
+- Lock step? Primary versioning. Release cycle should be synchrnoized. If not, bad for packaging.
 
 - It is easy to communicate with Trilinos people from Christian and Luc.
 
@@ -64,7 +64,7 @@
 
 - Tepetora and Zoltan teams can overlap
 
-- Multi repos: operate differently
+- Multi repos: Operate differently
 
 - Kokkos Eco-system. Nothing is distributed originally. Interoperate with Kokkos data structures and execution spaces. Support portability and devices.
 
@@ -75,7 +75,7 @@
 - Benefit. Reuse resources. e.g. release.
 Remove overhead.
 
-- Compared to HPSF. They do not take a winner. OpenMPI and Mvapitch can fine.
+- Compared to HPSF. They do not take a winner. Coexistence of OpenMPI and Mvapich is fine.
 We do not take this approach. We propose one winner. Try to avoid duplicated, unlike CUDA toolkit. Do not reinvent capabilities inside the ecosystem. Maintainability issues. Fairly tightly integrated.
 
 - What if there is a missing capability available from outside the ecosystem. If the solution exists in the ecosystem, please use it.
