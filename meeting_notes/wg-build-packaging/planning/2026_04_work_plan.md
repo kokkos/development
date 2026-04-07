@@ -8,6 +8,7 @@
 - Investigate how to better leverage `find_package` for TPL integration in Kokkos core. Hopefully we can reduce the number of flags we manually curate.
 - Develop a recommendation for integrating TPLs in the CMakeFiles inside our ecosystem. This should give clear guidelines and prefer the easiest option to integrate. It also should include a CMake test-project for testing
 - Make Kokkos' test buildable as a stand-alone project. This allows us to test our package managers, binaries, and tpl integrations rigorously.
+- Provide some helpers with CMake presets
 
 ## Spack
 - Checklist for new releases so anyone can update the Spack recipe.
@@ -20,6 +21,7 @@
 ## Other Package Managers
 - Finish Conan recipe, check if we want/should have an easybuild package.
 - Evaluate CPack to export binary packages and if we can build and test them as part of our CI process.
+- Debian and Fedora packages
 
 ## Documentation
 - Evaluate if our page on "integrating Kokkos" need to be reworked.
