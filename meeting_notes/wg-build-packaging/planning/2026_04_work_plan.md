@@ -9,6 +9,7 @@
 - Develop a recommendation for integrating TPLs in the CMakeFiles inside our ecosystem. This should give clear guidelines and prefer the easiest option to integrate. It also should include a CMake test-project for testing
 - Make Kokkos' test buildable as a stand-alone project. This allows us to test our package managers, binaries, and tpl integrations rigorously.
 - Provide some helpers with CMake presets
+- Develop a deprecation-cycle for CMake options Kokkos wants to deprecate
 
 ## Spack
 - Checklist for new releases so anyone can update the Spack recipe.
