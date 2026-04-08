@@ -1,5 +1,5 @@
-## Tiage
-- Print the error message if a compile and linke check fails
+## Triage
+- Print the error message if a compile and link check fails
 
 ## Ongoing
 - Have the compiler/linker launcher be a usage requirement of a target. https://gitlab.kitware.com/cmake/cmake/-/work_items/27598
