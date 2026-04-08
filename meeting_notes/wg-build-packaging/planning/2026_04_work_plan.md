@@ -24,6 +24,11 @@
 - Evaluate CPack to export binary packages and if we can build and test them as part of our CI process.
 - Debian and Fedora packages
 
+## Godbolt
+- Checklist for integrating a new Kokkos version in godbolt
+- Have a Cuda enabled Kokkos on Godbolt
+- Have correct SIMD settings (it was pointed out at HPSF that it would be super helpful to see simd working)
+
 ## Documentation
 - Evaluate if our page on "integrating Kokkos" need to be reworked.
 - Evaluate all documentation pages that concern build and packaging for being up to date and helpful regularly
