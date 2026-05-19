@@ -1,0 +1,80 @@
+\input{KokkosTutorial_PreTitle}
+\usepackage{tikz}
+\graphicspath{{kk_4_5/figures/}}
+
+%disclaimer for Sandia. uncomment and the whole blob goes away @ b80c116300122
+%% \def\sandid{SAND2024-16526PE}
+
+% \title{Performance Portability with Kokkos}
+\title{Kokkos Kernels 4.7.0 Release Briefing}
+
+%BAD misuse of author field
+\author{Kokkos Kernels team}
+
+\date{2025-08-27}
+
+\input{KokkosTutorial_PostTitle}
+
+\shorttrue
+\mediumfalse
+\fullfalse
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+
+\begin{frame}[fragile]{Outline}
+
+  \textbf{4.7.0 Release Highlights}
+
+  \begin{itemize}
+    \item{New Features}
+    %% \item{Backend updates}
+    \item{General Enhancements}
+    %% \item{Graphs Enhancements}
+    %% \item{Tuning changes demo}
+    %% \item{Build system updates}
+    \item{Deprecations and other breaking changes}
+    %% \item{Batched updates}
+    %% \item{Bug Fixes}
+    \item{Documentation}
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}{Find More}
+
+  \textbf{Online Resources}:
+
+  \begin{itemize}
+    \item \url{https://github.com/kokkos}:
+          \begin{itemize}
+            \item Primary Kokkos GitHub Organization
+          \end{itemize}
+    \item \url{https://github.com/kokkos/kokkos-tutorials/wiki/Kokkos-Lecture-Series}:
+          \begin{itemize}
+            \item{Slides, recording and Q\&A for the Full Lectures}
+          \end{itemize}
+    \item \url{https://kokkos.org/kokkos-kernels/docs/}:
+          \begin{itemize}
+            \item Kokkos Kernels' online documentation (also available in source repo)
+          \end{itemize}
+    \item \url{https://kokkosteam.slack.com}:
+          \begin{itemize}
+            \item Slack space for Kokkos with {\ttfamily \#kokkos-kernels} channel.
+            \item Please join: fastest way to get your questions answered.
+            \item Can whitelist domains, or invite individual people.
+          \end{itemize}
+  \end{itemize}
+
+\end{frame}
+
+\input{kk_4_7/Section_NewFeatures.tex}
+\input{kk_4_7/Section_GeneralEnhancements.tex}
+\input{kk_4_7/Section_Deprecations.tex}
+\input{kk_4_7/Section_Documentation.tex}
+
+\end{document}

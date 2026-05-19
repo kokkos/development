@@ -1,0 +1,41 @@
+\begin{frame}[fragile]
+
+  {\Huge General Enhancements}
+
+  \vspace{10pt}
+
+\end{frame}
+
+\begin{frame}[fragile]{Batched}
+  Refactoring kernels to extract common features
+  \begin{itemize}
+  \item {\ttfamily KokkosBatched::SerialPttrf} and {\ttfamily KokkosBatched::SerialPttrs}
+    \begin{itemize}
+    \item validate template parameters with static assertions
+    \item fix internal types for complex/real valued views
+    \item move internal implementation to {\ttfamily namespace KokkosBatched::Impl}
+    \end{itemize}
+  \end{itemize}
+  Adding usage examples for the following kernels
+  \begin{itemize}
+  \item {\ttfamily KokkosBatched::SerialGbtrf} and {\ttfamily KokkosBatched::SerialGbtrs}
+  \item {\ttfamily KokkosBatched::SerialPbtrf} and {\ttfamily KokkosBatched::SerialPbtrs}
+  \item {\ttfamily KokkosBatched::SerialPttrf} and {\ttfamily KokkosBatched::SerialPttrs}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{BLAS/LAPACK}
+  Modernize some BLAS 1 kernels
+  \begin{itemize}
+  \item {\ttfamily KokkosBlas::axpy} now uses execution space instance for internal {\ttfamily deep\_copy} and fill operations fixing behavior in stream execution
+  \item {\ttfamily KokkosBlas::dot} simplify functor implementation to deduce execution space type
+  \end{itemize}
+  Fix internal layout of {\ttfamily S} parameter in {\ttfamily KokkosLapack::svd}
+\end{frame}
+
+\begin{frame}[fragile]{Third Party Libraries}
+  \begin{itemize}
+  \item introduce {\ttfamily KokkosKernels::Impl::Singleton} to clean-up TPL handles in {\ttfamily Kokkos::finalize()}
+  \item refactor of {\ttfamily KokkosSparse::sptrsv\_symbolic} and {\ttfamily KokkosSparse::sptrsv\_numeric} to allow numeric phase to be called multiple time with cuSPARSE TPL
+  \end{itemize}
+\end{frame}

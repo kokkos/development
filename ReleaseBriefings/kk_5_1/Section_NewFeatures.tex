@@ -1,0 +1,38 @@
+\begin{frame}[fragile]
+
+  {\Huge New Features}
+
+  \vspace{10pt}
+
+\end{frame}
+
+\begin{frame}[fragile]{New Features}
+  \textbf{LAPACK}
+  \begin{itemize}
+  \item {\ttfamily KokkosLapack::geqrf}
+  \end{itemize}
+  \textbf{Batched Dense}
+  \begin{itemize}
+  \item {\ttfamily KokkosBatched::SerialSYR2}
+  \item {\ttfamily KokkosBatched::\{Team,ThreadVector,Serial\}Axpy} with rank 1 inputs
+  \end{itemize}
+  \textbf{Sparse}
+  \begin{itemize}
+  \item {\ttfamily KokkosSparse::SellMatrix}
+  \end{itemize}
+  \textbf{Third Party Libraries}
+  \begin{itemize}
+  \item {\ttfamily Adding Apple Accelerate support for BLAS and LAPACK on MacOS}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{SellMatrix}
+  Adding a new matrix format alongside CrsMatrix and BsrMatrix:
+  \begin{center}{\ttfamily KokkosSparse::Experimental::SellMatrix}\end{center}
+  and support for matrix-vector multiplication with that matrix format, native, cuSPARSE and rocSPARSE implementations available.
+  Current limitations:
+  \begin{itemize}
+  \item only one slice per matrix supported
+  \item only single vector allowed for SpMV operation
+  \end{itemize}
+\end{frame}

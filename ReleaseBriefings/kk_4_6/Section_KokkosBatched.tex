@@ -1,0 +1,73 @@
+
+%==========================================================================
+
+\begin{frame}[fragile]
+
+  {\Huge Batched updates:}\\
+  \vspace{10pt}
+
+  Supporting general banded matrix and general matrix solvers
+  \begin{itemize}
+  \item Batched serial \texttt{lacgv}: Conjugates the length n complex vector
+  \item Batched serial \texttt{syr}: Performs the rank 1 operation A:= alpha*x*x**T + A
+  \item Batched serial \texttt{ger}: Performs the rank 1 operation A:= alpha*x*y**T + A
+  \item Batched serial \texttt{gbtrf}: LU factorization of a general banded matrix A
+  \item Batched serial \texttt{getrf}: LU factorization of a general matrix A
+  \item Batched serial \texttt{getrs}: Solves a general system A * x = b factorized by \texttt{getrf}
+  \end{itemize}  
+\end{frame}
+  
+  %==========================================================================
+
+\begin{frame}[fragile]{\texttt{Batched updates}}
+  
+  \begin{figure}
+    \begin{tabular}{c}
+      \begin{minipage}{0.25\hsize}
+        \textbf{General}
+        \includegraphics[width=\textwidth]{general.png}
+        \textbf{getrf (4.6)\\ getrs (4.6)\\ iamax (4.5)\\ laswp (4.5)\\}
+      \end{minipage}	
+      \begin{minipage}{0.25\hsize}
+        \textbf{General-Banded}
+        \includegraphics[width=\textwidth]{banded.png}
+        \textbf{gbtrf (4.6)\\ gbtrs\\ iamax (4.5)\\ tbsv (4.4) \\ ger (4.6)}
+      \end{minipage}	
+      \begin{minipage}{0.25\hsize}
+        \textbf{PDS-Banded}
+        \includegraphics[width=\textwidth]{pds_banded.png}
+        \textbf{pbtrf (4.5)\\ pbtrs (4.5)\\ tbsv (4.4)\\ syr (4.6) \\ lacgv (4.6)}
+      \end{minipage}
+      \begin{minipage}{0.25\hsize}
+        \textbf{PDS-Tridiagonal}
+        \includegraphics[width=\textwidth]{pds_tridiag.png}
+        \textbf{pttrf (4.4)\\ pttrs (4.5)\\ \\ \\}
+      \end{minipage}
+    \end{tabular} 
+  \end{figure}
+  
+\end{frame}
+
+\begin{frame}[fragile]{Batched Enhancement}
+  
+  {\Huge Batched Enhancement:}
+  \vspace{10pt}
+
+  Refactoring, Testing and Fixing
+  \begin{itemize}
+  \item Improve batched serial \texttt{gemm}: Add ConjTrans support
+  \item Improve batched serial \texttt{trsv}: Add ConjTrans support (except for blocked case)
+  \item Improve batched serial \texttt{trsm}: Add ConjTrans support (except for blocked case)
+  \item Refactor batched serial \texttt{tbsv}: Add ConjTrans tests
+  \item Refactor batched serial \texttt{pbtrf}: Add analytical tests
+  \item Refactor batched serial \texttt{pbtrs}: Add analytical tests
+  \item Testing and fixing Serial \texttt{QR}: Fix bugs and add unit-tests
+  \end{itemize}
+  
+  \textbf{Note:} Implementation details are moved under \texttt{KokkosBatched::Impl} namespace
+  
+  
+\end{frame}
+  
+  %==========================================================================
+  

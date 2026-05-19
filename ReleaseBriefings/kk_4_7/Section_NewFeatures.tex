@@ -1,0 +1,22 @@
+\begin{frame}[fragile]
+
+  {\Huge New Features}
+
+  \vspace{10pt}
+
+\end{frame}
+
+\begin{frame}[fragile]{Batched Solvers}
+  Adding two new kernels for band matrices 
+  \begin{enumerate}
+  \item {\ttfamily KokkosBatched::SerialGbtrf}
+    \begin{itemize}
+    \item Factorization for general band matrices
+    \end{itemize}
+  \item {\ttfamily KokkosBatched::SerialGbtrs}
+    \begin{itemize}
+    \item Triangular solvers using the factors computed with {\ttfamily KokkosBatched::SerialGbtrf}
+    \end{itemize}
+  \end{enumerate}
+  Both kernels work in serial on a single (small matrix) and can be called within a parallel kernel that exposes parallelism on a set of matrices.
+\end{frame}

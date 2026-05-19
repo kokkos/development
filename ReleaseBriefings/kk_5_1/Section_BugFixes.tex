@@ -1,0 +1,17 @@
+\begin{frame}[fragile]
+
+  {\Huge Bug Fixes}
+
+  \vspace{10pt}
+
+\end{frame}
+
+\begin{frame}[fragile]{Bug Fixes}
+  \begin{itemize}
+  \item Adding {\ttfamily Kokkos::Profiling::popRegion()} in BLAS unit-tests and team GMRES example.
+  \item Adding profiling regions with proper labels in SpMV for both Crs and Bsr formats.
+  \item Fix for legacy view support in parILUt.
+  \item Adding missing header in KokkosBlas1\_swap.hpp.
+  \item Fix in KokkosBatched::Getrs: adding missing header, adding {\ttfamily static\_assert} and remove {\ttfamily KOKKOS\_INLINE\_FUNCTION} marking for functor constructor.
+  \end{itemize}
+\end{frame}

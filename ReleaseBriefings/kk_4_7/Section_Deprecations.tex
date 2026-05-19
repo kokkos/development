@@ -1,0 +1,17 @@
+\begin{frame}[fragile]
+
+  {\Huge Deprecations}
+
+  \vspace{10pt}
+
+\end{frame}
+
+\begin{frame}[fragile]{Deprecations}
+  Renaming macros to avoid using reserved patterns and clearly identify them as internal
+  \begin{itemize}
+    \item {\ttfamily \_\_KOKKOSBATCHED\_PROMOTION\_\_} $\rightarrow$ {\ttfamily KOKKOSBATCHED\_IMPL\_PROMOTION}
+    \item {\ttfamily KOKKOSBATCHED\_ENABLE\_AVX} $\rightarrow$ {\ttfamily KOKKOSBATCHED\_IMPL\_ENABLE\_AVX}
+    \item {\ttfamily \_\_KOKKOSBATCHED\_ENABLE\_LAPACKE\_\_} $\rightarrow$ {\ttfamily KOKKOSBATCHED\_IMPL\_ENABLE\_LAPACKE}
+    \item {\ttfamily \_\_KOKKOSBATCHED\_ENABLE\_INTEL\_MKL\_COMPACT\_BATCHED\_\_} $\rightarrow$ {\ttfamily KOKKOSBATCHED\_IMPL\_ENABLE\_INTEL\_MKL\_COMPACT\_BATCHED}
+  \end{itemize}
+\end{frame}
