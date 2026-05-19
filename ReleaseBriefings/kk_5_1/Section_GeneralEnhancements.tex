@@ -1,0 +1,37 @@
+\begin{frame}[fragile]
+
+  {\Huge General Enhancements}
+
+  \vspace{10pt}
+
+\end{frame}
+
+\begin{frame}[fragile]{General Enhancements}
+  \textbf{Batched}
+  \begin{itemize}
+  \item {\ttfamily KokkosBatched::\{Team,TeamVector\}Copy}\\
+    \hspace{1em} support conjugate and transpose modes
+  \end{itemize}
+
+  \textbf{Sparse}
+  \begin{itemize}
+  \item {\ttfamily KokkosSparse::sort\_crs\_matrix}\\
+    \hspace{1em} add shell, std::sort and improve radix
+  \item {\ttfamily KokkosSparse::spiluk\_symbolic}\\
+    \hspace{1em} reduce temporary memory requirement
+  \item {\ttfamily KokkosSparse::transpose\_matrix}\\
+    \hspace{1em} performance improvement (remove allocation, remove fence, remove branching)
+  \item {\ttfamily kk\_extract\_diagonal\_blocks\_crsmatrix\_with\_rcb\_sequential}\\
+    \hspace{1em} now only extracts blocks and does not re-compute the partitions
+  \end{itemize}
+  
+\end{frame}
+
+%% \begin{frame}[fragile]{Batched}
+%% \end{frame}
+
+%% \begin{frame}[fragile]{BLAS/LAPACK}
+%% \end{frame}
+
+%% \begin{frame}[fragile]{Third Party Libraries}
+%% \end{frame}

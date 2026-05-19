@@ -1,0 +1,89 @@
+%==========================================================================
+
+\begin{frame}[fragile]
+
+  {\Huge New Features}
+
+  \vspace{10pt}
+
+\end{frame}
+
+%==========================================================================
+
+% Examples
+
+% note: always keep the [fragile] for your frames!
+
+%\begin{frame}[fragile]{Example list}
+%  \begin{itemize}
+%      \item Item 1
+%      \item Item 2 with some \texttt{code}
+%      \begin{itemize}
+%        \item Sub-item 2.1
+%        \item Sub-item 2.2
+%      \end{itemize}
+%  \end{itemize}
+%\end{frame}
+
+%\begin{frame}[fragile]{Example code}
+%    \begin{code}[keywords={std}]
+%        #include <iostream>
+%        
+%        int main() {
+%            std::cout << "hello world\n";
+%        }
+%    \end{code}
+%\end{frame}
+
+%\begin{frame}[fragile]{Example table}
+%    \begin{center}
+%        \begin{tabular}{l|l}
+%            a & b \\\hline
+%            c & d
+%        \end{tabular}
+%    \end{center}
+%\end{frame}
+
+%==========================================================================
+
+\begin{frame}[fragile]{Batched updates}
+  Supporting positive definitive symmetric (PDS) banded solvers and preparation for general matrix solvers.\\[1em]
+  \textbf{Content:}
+    \begin{itemize}
+        \item Batched serial \texttt{laswp}: Series of row interchanges on the matrix A
+        \item Batched serial \texttt{iamax}: Finds the index of the first element with max absolute value
+        \item Batched serial \texttt{pbtrs}: Solve PDS banded matrix A factorized by \texttt{pbtrf}
+        \item Batched serial \texttt{pbtrf}: Cholesky factorization of PDS banded matrix A
+        \item Batched serial \texttt{pttrs}: Solve tridiagonal system A factorized by \texttt{pttrf}
+    \end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]{\texttt{Batched updates}}
+
+  \begin{figure}
+    \begin{tabular}{c}
+      \begin{minipage}{0.25\hsize}
+        \textbf{General}
+        \includegraphics[width=\textwidth]{general.png}
+        \textbf{getrf\\ getrs\\ iamax (4.5)\\ laswp (4.5)}
+      \end{minipage}	
+      \begin{minipage}{0.25\hsize}
+        \textbf{General-Banded}
+        \includegraphics[width=\textwidth]{banded.png}
+        \textbf{gbtrf\\ gbtrs\\ iamax (4.5)\\ tbsv (4.4)}
+      \end{minipage}	
+      \begin{minipage}{0.25\hsize}
+        \textbf{PDS-Banded}
+        \includegraphics[width=\textwidth]{pds_banded.png}
+        \textbf{pbtrf (4.5)\\ pbtrs (4.5)\\ tbsv (4.4)\\}
+      \end{minipage}
+      \begin{minipage}{0.25\hsize}
+        \textbf{PDS-Tridiagonal}
+        \includegraphics[width=\textwidth]{pds_tridiag.png}
+        \textbf{pttrf (4.4)\\ pttrs (4.5)\\ \\ }
+      \end{minipage}
+    \end{tabular} 
+  \end{figure}
+  
+  \end{frame}

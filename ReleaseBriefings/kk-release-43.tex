@@ -1,0 +1,186 @@
+\input{KokkosTutorial_PreTitle}
+\usepackage{tikz}
+\graphicspath{{kk_4_3/figures/}}
+%disclaimer for Sandia. uncomment and the whole blob goes away @ b80c116300122
+%\def\sandid{UPDATEME SAND2020-7755 PE}
+
+% \title{Performance Portability with Kokkos}
+\title{Kokkos Kernels 4.3 Release Briefing}
+
+%BAD misuse of author field
+\author{Kokkos Kernels team}
+
+
+\input{KokkosTutorial_PostTitle}
+
+\shorttrue
+\mediumfalse
+\fullfalse
+
+\begin{document}
+
+\begin{frame}
+        \titlepage
+\end{frame}
+
+
+
+\begin{frame}[fragile]{Outline}
+\textbf{4.3 Release Highlights}
+    \begin{itemize}
+      \item{Block ILUK}
+      \item{Stream RCM re-ordering and ILUK}
+      \item{Implicit time integrators}
+      \item{SPMVHandle}
+      \item{Miscellaneous}
+      \item{Deprecations and other breaking changes}
+    \end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Find More}
+\textbf{Online Resources}:
+\begin{itemize}
+        \item \url{https://github.com/kokkos}:
+                \begin{itemize}
+                        \item Primary Kokkos GitHub Organization
+                \end{itemize}
+        \item \url{https://github.com/kokkos/kokkos-tutorials/wiki/Kokkos-Lecture-Series}:
+                \begin{itemize}
+			\item{Slides, recording and Q\&A for the Full Lectures}
+                \end{itemize}
+        \item \url{https://github.com/kokkos/kokkos-kernels/wiki}:
+                \begin{itemize}
+                        \item Wiki including API reference
+                \end{itemize}
+        \item \url{https://kokkosteam.slack.com}:
+                \begin{itemize}
+                        \item Slack channel for Kokkos.
+                        \item Please join: fastest way to get your questions answered.
+                        \item Can whitelist domains, or invite individual people.
+                \end{itemize}
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Block ILU}
+Both {\tt spiluk\_symbolic} and {\tt spiluk\_numeric} now support block sparse row data.
+\begin{itemize}
+\item The block algorithms operate on the block graph of the matrix
+\item Operations on blocks are performed with dense linear algebra kernels
+\item Increasing level of fill by one adds a new block per row, i.e. block size new entries per row
+\item The spiluk handle constructor now takes a {\tt block\_size} argument defaulted to 0
+\item the spiluk handle provides two new methods:
+\begin{itemize}
+\item {\tt get\_block\_size()}
+\item {\tt set\_block\_size()}
+\end{itemize}
+\end{itemize}
+
+Upcoming:
+\begin{itemize}
+\item new interface that accepts a Crs or Bsr matrix instead of views
+\item move new Crs interface out of experimental, keep Bsr in experimental at first
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Stream RCM re-ordering and ILUK}
+  The utility function \texttt{kk\_extract\_diagonal\_blocks\_crsmatrix\_sequential} now has an option for reverse Cuthill–McKee ({RCM}) re-odering
+  \begin{itemize}
+    \item The function is able to
+      \begin{itemize}
+        \item apply {RCM} re-ordering to extracted diagonal sub-matrices as indicated by the Boolean input argument \texttt{UseRCMReordering}
+        \item return a vector of permutation index views in RCM order corresonding to diagonal blocks if \texttt{UseRCMReordering} is \texttt{true}, or an empty vector if it is \texttt{false}
+      \end{itemize}
+    \item Permutation index views have the same \texttt{memory\_space} as the input CRS matrix 
+    \item Usage example:
+      \begin{itemize}
+        \item \texttt{kk\_extract\_diagonal\_blocks\_crsmatrix\_sequential(A\_in, diagBlk\_in\_b);}(default - no RCM reordering)
+        \item \texttt{permute = kk\_extract\_diagonal\_blocks\_crsmatrix\_sequential(A\_in, diagBlk\_out, UseRCMReordering);}
+        \item \texttt{diagBlk\_out} and \texttt{permute} can typically used as inputs for stream-based processing in \texttt{Ifpack2::RILUK} preconditioner
+      \end{itemize} 
+  \end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Implicit time integrators}
+Kokkos ODE now has implicit time integrators in {\tt KokkosODE\_BDF.hpp}
+\begin{itemize}
+\item backward differentiation formulae order 1 to 5
+\item automatic order increase/decrease and time step increase/decrease
+\item automatic selection of the first time step size
+\end{itemize}
+
+Upcoming:
+\begin{itemize}
+\item implementation of Adams-Moulton implicit methods
+\item more uniform interface for all algorithms
+\end{itemize}
+
+\begin{block}{Warning!}
+This feature is still experimental: please let us know about issues you encounter!
+\end{block}
+\end{frame}
+
+\begin{frame}{SPMVHandle}
+  \texttt{KokkosSparse::spmv} now takes an optional handle argument.
+\begin{itemize}
+  \item Stores TPL matrix analysis, allowing reuse
+  \begin{itemize}
+    \item Especially benefits rocSPARSE (measured 15x speedup vs. setup every call)
+  \end{itemize}
+  \item Allows algorithm selection and expert tuning (replaces \texttt{Controls})
+  \item Setup is performed automatically on the first \texttt{spmv} call
+  \item \texttt{KokkosSparse::SPMVHandle<ExecSpace, AType, XType, YType> handle;}
+  \item \texttt{KokkosSparse::spmv(space, \textbf{\&handle}, "N", alpha, A, ...);}
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}{BLAS - SYR2}
+Last BLAS rank update function implemented: SYR2.\\
+It performs a symmetric rank-2 update:
+\begin{equation*}A=A+\alpha (x*y^T+y*x^T)\end{equation*}
+\begin{itemize}
+\item {\tt KokkosBlas::syr2(space, trans, uplo, alpha, x, y, A);}
+\item provides: native, BLAS, cuBLAS and rocBLAS implementations
+\item it is thread safe and non-blocking
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Miscellaneaous}
+TPL support
+\begin{itemize}
+\item cuSOLVER and rocSOLVER libraries are added and provide vendor optimized implementation for LAPACK algorithms
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Deprecations and other breaking changes}
+Only one change this time around:
+\begin{itemize}
+  \item {\tt KokkosSparse::Experimental::spadd\_symbolic} and {\tt spadd\_numeric} now require two new arguments for number of rows and columns.
+  \item Before 4.3:
+  \begin{itemize}
+    \item \texttt{spadd\_symbolic(\&handle, a\_rowmap, a\_entries, b\_rowmap, ...);}
+    \item \texttt{spadd\_numeric(\&handle, a\_rowmap, a\_entries, a\_values, ...);}
+  \end{itemize}
+  \item 4.3:
+  \begin{itemize}
+    \item \texttt{spadd\_symbolic(\&handle, m, n, a\_rowmap, a\_entries, b\_rowmap, ...);}
+    \item \texttt{spadd\_numeric(\&handle, m, n, a\_rowmap, a\_entries, a\_values, ...);}
+  \end{itemize}
+\end{itemize}
+
+Upcoming: will have a look at what is in the {\tt Experimental} and move some kernels out of it and deprecate the experimental version.
+
+\end{frame}
+
+\end{document}

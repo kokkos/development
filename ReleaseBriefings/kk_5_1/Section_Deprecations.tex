@@ -1,0 +1,30 @@
+\begin{frame}[fragile]
+
+  {\Huge Deprecations}
+
+  \vspace{10pt}
+
+\end{frame}
+
+\begin{frame}[fragile]{Deprecations}
+  Deprecated the old interface for diagonal block extraction that recomputed the rcb partitions everytime
+  \begin{itemize}
+  \item {\ttfamily kk\_extract\_diagonal\_blocks\_crsmatrix\_with\_rcb\_sequential(\\
+    \hspace{2em}const crsMat\_t \&A, coor\_view\_type \&coors,\\
+    \hspace{2em}std::vector<crsMat\_t> \&DiagBlk\_v, perm\_view\_type \&perm\_rcb)}\\
+    $\rightarrow$ {\ttfamily void kk\_extract\_diagonal\_blocks\_crsmatrix\_with\_rcb\_sequential(\\
+    \hspace{2em}const crsMat\_t \&A, const perm\_view\_type \&perm\_rcb,\\
+    \hspace{2em}const perm\_view\_type \&reverse\_perm\_rcb,\\
+    \hspace{2em}const std::vector<typename crsMat\_t::non\_const\_ordinal\_type> partition\_sizes\_rcb,\\
+    \hspace{2em}std::vector<crsMat\_t> \&DiagBlk\_v)}
+  \item {\ttfamily Level2::Blocked::mb} and {\ttfamily Level3::Blocked::mb}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Deprecations}
+  Macro deprecations
+  \begin{itemize}
+    \item {\ttfamily KOKKOSKERNELS\_ENABLE\_HOST\_ONLY}
+    \item {\ttfamily KOKKOSKERNELS\_DEBUG}
+  \end{itemize}
+\end{frame}

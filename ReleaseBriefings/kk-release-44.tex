@@ -1,0 +1,162 @@
+\input{KokkosTutorial_PreTitle}
+\usepackage{tikz}
+\graphicspath{{kk_4_4/figures/}}
+%disclaimer for Sandia. uncomment and the whole blob goes away @ b80c116300122
+%% \def\sandid{SAND2024-XXXX PE}
+
+% \title{Performance Portability with Kokkos}
+\title{Kokkos Kernels 4.4 Release Briefing}
+
+%BAD misuse of author field
+\author{Kokkos Kernels team}
+
+
+\input{KokkosTutorial_PostTitle}
+
+\shorttrue
+\mediumfalse
+\fullfalse
+
+\begin{document}
+
+\begin{frame}
+        \titlepage
+\end{frame}
+
+
+
+\begin{frame}[fragile]{Outline}
+\textbf{4.4 Release Highlights}
+    \begin{itemize}
+      \item {Block SpTRSV} (James Foucar)
+      \item {RCM improvements} (Brian Kelley)
+      \item {TPL changes to SpMV and SpGEMM} (Carl Pearson)
+      \item {Batched banded solver} (Yuuichi Asahi)
+      \item {Other minor changes}
+    \end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Find More}
+\textbf{Online Resources}:
+\begin{itemize}
+        \item \url{https://github.com/kokkos}:
+                \begin{itemize}
+                        \item Primary Kokkos GitHub Organization
+                \end{itemize}
+        \item \url{https://github.com/kokkos/kokkos-tutorials/wiki/Kokkos-Lecture-Series}:
+                \begin{itemize}
+			\item{Slides, recording and Q\&A for the Full Lectures}
+                \end{itemize}
+        \item \url{https://github.com/kokkos/kokkos-kernels/wiki}:
+                \begin{itemize}
+                        \item Wiki including API reference
+                \end{itemize}
+        \item \url{https://kokkosteam.slack.com}:
+                \begin{itemize}
+                        \item Slack channel for Kokkos.
+                        \item Please join: fastest way to get your questions answered.
+                        \item Can whitelist domains, or invite individual people.
+                \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Block SpTRSV}
+    \begin{itemize}
+      \item{Support for block sparse matrices was added to KokkosKernel's sparse triangular solver}
+      \item{To use, just provide a block\_size argument to your sptrsv handle}
+      \item{Not all sptrsv algorithms support blocks. cuSparse, chain, and supernodal algs are not yet supported}
+      \item{Future work: performance analysis and integration with Ifpack2}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Bugfixes: RCM Reordering}
+
+  \vspace{10pt}
+
+  \begin{itemize}
+    \item Reverse Cuthill-McKee (\texttt{KokkosGraph::Experimental::graph\_rcm})
+    \item Fix invalid starting vertex being chosen for graphs where all nodes have equal degree.
+    \item Use min-degree starting vertex for each connected component.
+    \begin{itemize}
+      \item Previously, starting vertices for connected components other than the first were chosen arbitrarily.
+    \end{itemize}
+  \end{itemize}
+
+  \vspace{10pt}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Overview}
+\begin{itemize}
+\item rocSPARSE: multivector SpMV, improved SpMV algorithm selection.
+\item cuSPARSE: bugfixes and profiling region improvements.
+\item OneMKL: bugfixes.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{AMD rocSPARSE}
+\begin{itemize}
+\item \href{https://github.com/kokkos/kokkos-kernels/pull/2233}{\#2233}
+Add multivector spmv
+\item \href{https://github.com/kokkos/kokkos-kernels/pull/2245}{\#2245}
+Improve spmv performance: use \texttt{rocsparse\_spmv\_alg\_csr\_stream} unless \texttt{SPMV\_MERGE\_PATH}, in which case use \texttt{rocsparse\_spmv\_alg\_csr\_adaptive}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Nvidia cuSPARSE}
+
+\begin{itemize}
+\item \href{https://github.com/kokkos/kokkos-kernels/pull/2152}{\#2152}
+Don't use cuSparse for SpGEMM in CUDA 11.6.1 (cuSparse 11.7.2) because it produces incorrect results.
+\item \href{https://github.com/kokkos/kokkos-kernels/pull/2176}{\#2176}
+Fix a configure issue where cuSparse got enabled when Magma was enabled and cuSparse was supposed to be disabled.
+\item \href{https://github.com/kokkos/kokkos-kernels/pull/2193}{\#2193}
+Improve Kokkos Profiling region labels for spgemm\_symbolic.
+\item \href{https://github.com/kokkos/kokkos-kernels/pull/2213}{\#2213}
+Fix spgemm\_symbolic for CUDA $\geq$ 12.2.
+\item \href{https://github.com/kokkos/kokkos-kernels/pull/2219}{\#2219}
+Improve Kokkos Profiling region labels for spmv.
+\item \href{https://github.com/kokkos/kokkos-kernels/pull/2240}{\#2240}
+\texttt{SPMV\_NATIVE\_MERGE\_PATH} algorithm means \texttt{CUSPARSE\_SPMV\_CSR\_ALG2}.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Intel OneMKL}
+
+\begin{itemize}
+\item \href{https://github.com/kokkos/kokkos-kernels/pull/2274}{\#2274}
+Don't use OneMKL for unsupported spmv modes (n, c)
+\item \href{https://github.com/kokkos/kokkos-kernels/pull/2276}{\#2276}
+Workaround for OneMKL GEMV mishandling beta=0.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Grab Bag}
+\begin{itemize}
+\item \href{https://github.com/kokkos/kokkos-kernels/pull/2185}{\#2185}
+Support Trilinos using OneAPI for GPU and BLAS/LAPACK for CPU.
+\item \href{https://github.com/kokkos/kokkos-kernels/pull/2240}{\#2240}
+\texttt{KokkosSparse::is\_spmv\_algorithm\_native} now accurately reports whether \texttt{SPMV\_MERGE\_PATH} algorithm is using the non-TPL implementation.
+Introduce \texttt{SPMV\_NATIVE\_MERGE\_PATH} algorithm.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Batched banded solver}
+\begin{itemize}
+\item Adding capabilities to work with batches of tridiagonal matrices and banded matrices
+\item Batch tridiagonal matrix factorization: pptrf, see \href{https://github.com/kokkos/kokkos-kernels/pull/2256}{\#2256}
+\item Batch triangular solve for banded matrices: tbsv, see \href{https://github.com/kokkos/kokkos-kernels/pull/2202}{\#2202}
+\end{itemize}
+\end{frame}
+
+\end{document}

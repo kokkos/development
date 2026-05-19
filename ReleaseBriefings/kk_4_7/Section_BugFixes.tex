@@ -1,0 +1,53 @@
+\begin{frame}[fragile]
+
+  {\Huge Deprecations}
+
+  \vspace{10pt}
+
+\end{frame}
+
+\begin{frame}[fragile]{Deprecations}
+  Moving sparse linear algebra algorithms out of the {\ttfamily Experimental} namespace:
+  \begin{itemize}
+  \item Sparse Matrix-Matrix addition
+    \begin{itemize}
+    \item {\ttfamily KokkosSparse::Experimental::spadd\_symbolic} $\rightarrow$ {\ttfamily KokkosSparse::spadd\_symbolic}
+    \item {\ttfamily KokkosSparse::Experimental::spadd\_numeric} $\rightarrow$ {\ttfamily KokkosSparse::spadd\_numeric}
+    \end{itemize}
+  \item Sparse Matrix-Matrix multiplication
+    \begin{itemize}
+    \item {\ttfamily KokkosSparse::Experimental::spgemm\_symbolic} $\rightarrow$ {\ttfamily KokkosSparse::spgemm\_symbolic}
+    \item {\ttfamily KokkosSparse::Experimental::spgemm\_numeric} $\rightarrow$ {\ttfamily KokkosSparse::spgemm\_numeric}
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Deprecations}
+  Moving sparse preconditioners/solvers out of the {\ttfamily Experimental} namespace:
+  \begin{itemize}
+  \item Sparse triangular solver
+    \begin{itemize}
+    \item {\ttfamily KokkosSparse::Experimental::sptrsv\_symbolic} $\rightarrow$ {\ttfamily KokkosSparse::sptrsv\_symbolic}
+    \item {\ttfamily KokkosSparse::Experimental::sptrsv\_solve} $\rightarrow$ {\ttfamily KokkosSparse::sptrsv\_solve}
+    \end{itemize}
+  \item ILU(k)
+    \begin{itemize}
+    \item {\ttfamily KokkosSparse::Experimental::spiluk\_symbolic} $\rightarrow$ {\ttfamily KokkosSparse::spiluk\_symbolic}
+    \item {\ttfamily KokkosSparse::Experimental::spiluk\_numeric} $\rightarrow$ {\ttfamily KokkosSparse::spiluk\_numeric}
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Deprecations}
+  Moving sparse preconditioners/solvers out of the {\ttfamily Experimental} namespace:
+  \begin{itemize}
+  \item Gauss-Seidel
+    \begin{itemize}
+    \item {\ttfamily KokkosSparse::Experimental::gauss\_seidel\_symbolic} $\rightarrow$ {\ttfamily KokkosSparse::gauss\_seidel\_symbolic}
+    \item {\ttfamily KokkosSparse::Experimental::gauss\_seidel\_numeric} $\rightarrow$ {\ttfamily KokkosSparse::gauss\_seidel\_numeric}
+    \item {\ttfamily KokkosSparse::Experimental::forward\_sweep\_gauss\_seidel\_apply} $\rightarrow$ {\ttfamily KokkosSparse::forward\_sweep\_gauss\_seidel\_apply}
+    \item {\ttfamily KokkosSparse::Experimental::backward\_sweep\_gauss\_seidel\_apply} $\rightarrow$ {\ttfamily KokkosSparse::backward\_sweep\_gauss\_seidel\_apply}
+    \item {\ttfamily KokkosSparse::Experimental::symmetric\_gauss\_seidel\_apply} $\rightarrow$ {\ttfamily KokkosSparse::symmetric\_gauss\_seidel\_apply}
+    \end{itemize}
+  \end{itemize}
+\end{frame}

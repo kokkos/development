@@ -1,0 +1,21 @@
+\begin{frame}[fragile]
+
+  {\Huge Benchmarks}
+
+  \vspace{10pt}
+
+\end{frame}
+
+\begin{frame}[fragile]{Benchmarks}
+  \begin{itemize}
+  \item SpMV benchmark: fix {\ttfamily --mode} input parameter logic.
+  \item Removal of RajaPerfTests infrastructure.
+  \item Adding more parameter options for parILUt benchmark
+    \begin{itemize}
+    \item {\ttfamily-m [M]} : For GMRES, set the max subspace size.
+    \item {\ttfamily-i [I]} : For par\_ilut, set max iters.
+    \item {\ttfamily-l [L]} : For par\_ilut, set fill-in limit.
+    \item {\ttfamily-r [R]} : For par\_ilut, set residual norm delta stop.
+    \end{itemize}
+  \end{itemize}
+\end{frame}

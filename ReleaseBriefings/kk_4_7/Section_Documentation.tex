@@ -1,0 +1,17 @@
+\begin{frame}[fragile]
+
+  {\Huge Documentation}
+
+  \vspace{10pt}
+
+\end{frame}
+
+\begin{frame}[fragile]{Documentation}
+  Renaming macros to avoid using reserved patterns and clearly identify them as internal
+  \begin{itemize}
+    \item Fixing header file in {\ttfamily KokkosBatched::gemm}: {\ttfamily KokkosBlas2\_gemm.hpp} $\rightarrow$ {\ttfamily KokkosBlas3\_gemm.hpp}
+    \item Use {\ttfamily .. literalinclude::} for Example section in API documentation to keep documentation in sync with tested code 
+    \item adding API documentation template
+    \item Documentation changes are enforced in new {GitHub} action
+  \end{itemize}
+\end{frame}
