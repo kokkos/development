@@ -62,7 +62,7 @@
 
 - How Kokkos eco-system is different from Trlilions. Inter dependency. Divergent scope. Trlilions and LLVM under one repo.
 
-- Tepetora and Zoltan teams can overlap
+- Tpetra and Zoltan teams can overlap
 
 - Multi repos: Operate differently
 
@@ -70,7 +70,7 @@
 
 - What our scope is. It is really hard to draw a line here. You can only join if you want to reach productivity level.
 
-- Wider eco-system? Trlilinos or Pets-c is part of that.
+- Wider eco-system? Trlilinos or Petsc is part of that.
 
 - Benefit. Reuse resources. e.g. release.
 Remove overhead.
