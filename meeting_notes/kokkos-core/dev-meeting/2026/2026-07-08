@@ -1,0 +1,73 @@
+## Wednesday, July 08, 2026 Kokkos Developer Meeting
+
+
+## Linux Foundation Meeting Link
+
+https://zoom.us/j/98700099329?pwd=YhQn5LG1a8GSKTq2a4bxXMfy6OA0Ka.1
+
+- **Note taker**
+
+## Community
+
+- **Absences**
+  - Christian
+    - July 11 - 25 (Vacation)
+
+## CI & Nightly Testing
+
+  - [![gitlab](https://gitlab.spack.io/kokkos/kokkos/badges/develop/pipeline.svg?&key_text=GitLab(GH200,PVC,MI300A)&key_width=160)](https://gitlab.spack.io/kokkos/kokkos/-/pipelines?page=1&scope=all&ref=develop)
+  - [![jenkins-nightly](https://cloud1.cees.ornl.gov/jenkins-ci/job/Kokkos_nightly/badge/icon?style=plastic&subject=jenkins-nightly)](https://cloud1.cees.ornl.gov/jenkins-ci/job/Kokkos_nightly/lastCompletedBuild/pipeline-overview/)
+  - [![workflows/staged](https://github.com/kokkos/kokkos/actions/workflows/continuous-integration-stager.yml/badge.svg?branch=develop)](https://github.com/kokkos/kokkos/actions/workflows/continuous-integration-stager.yml?query=branch%3Adevelop)
+  - [![workflows/performance-benchmark](https://github.com/kokkos/kokkos/actions/workflows/performance-benchmark.yml/badge.svg?branch=develop)](https://github.com/kokkos/kokkos/actions/workflows/performance-benchmark.yml?query=branch%3Adevelop)
+  - [![kokkos-core-wiki](https://github.com/kokkos/kokkos-core-wiki/actions/workflows/deploy_docs.yml/badge.svg?branch=main)](https://github.com/kokkos/kokkos-core-wiki/actions/workflows/deploy_docs.yml?query=branch%3Amain)
+  - [![Nightly CEA builds](https://github.com/kokkos/kokkos/actions/workflows/nightly-cea.yml/badge.svg)](https://github.com/kokkos/kokkos/actions/workflows/nightly-cea.yml)
+
+  - [![Kokkos Tools nightly](https://github.com/kokkos/kokkos-tools/actions/workflows/build-with-kokkos.yml/badge.svg)](https://github.com/kokkos/kokkos-tools/actions/workflows/build-with-kokkos.yml?query=event%3Aschedule)
+
+  - CDash at https://my.cdash.org/index.php?project=Kokkos
+
+## Release
+- 5.2.0:
+  - https://github.com/kokkos/kokkos/pulls?q=is%3Aopen+is%3Apr+label%3A%22Blocks+Promotion%22
+  - priorities?
+  - targeted for July 2026 (RC 1st week of July) - release manager Nic?
+
+## To Discuss / Resolve
+
+approved pull requests: https://github.com/kokkos/kokkos/pulls?q=sort%3Aupdated-desc+is%3Apr+is%3Aopen+review%3Aapproved
+
+### Priority
+
+- MDRangePolicy Improvement, which PRs need reviews? [8721](https://github.com/kokkos/kokkos/pull/8721)
+    - Make time for reviewing this PR. It will be useful for SC workshop submission in the first week of August.
+
+- Self similar interface https://github.com/kokkos/kokkos/pull/8953
+  - Want to make progress on these and then follow up
+
+- subview with mdspan Arguments https://github.com/kokkos/kokkos/pull/9303
+
+- GTEST like testing framework https://github.com/kokkos/kokkos/pull/9252 (suppresses https://github.com/kokkos/kokkos/pull/8768)
+
+- Kokkos::single https://github.com/kokkos/kokkos/pull/8123
+  - Review comments addressed
+
+## Publications
+
+- MDRange optimization paper consideration for SC workshops
+- Possible papers we could focus on
+  - New Kokkos ecosystem paper mentioning new efforts and the transition to HPSF
+    - waiting for Comm blog post, and maybe Fortran Interop
+  - Maybe a paper to describe how Kokkos is evolving in response to the unified memory advent (APUs, HMM, etc.)
+- Technical blog posts
+
+## Bigger discussions
+- backend-specific properties:
+  - [6496](https://github.com/kokkos/kokkos/pull/6496): SYCL: Allow setting subgroup size
+- memory space design:
+  - [6835](https://github.com/kokkos/kokkos/pull/6835): Remove MemorySpace::[de]allocate overloads without labels
+  - [6918](https://github.com/kokkos/kokkos/issues/6918): kokkos_malloc should accept an execution space instance
+- Rethink the containers: They were designed in another age and it would be good to revise/rethink them. This might be a discussion for the time of v5-v6.
+
+## Notes
+
+## Attendees
