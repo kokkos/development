@@ -8,6 +8,16 @@
 
 \end{frame}
 
+%==========================================================================
+
+\begin{frame}[fragile]{Build System Changes}
+  \begin{itemize}
+    \item Flag checks now warn instead of raising a fatal error when a flag is rejected.
+    \item Failed checks now print the CMake configure log (CMake $\geq$ 3.26) for easier diagnosis.
+    \item \texttt{nvcc\_wrapper} now handles response files (\texttt{@file.rsp}).
+    \item Remove the \texttt{Kokkos\_CXX\_STANDARD} user option.
+  \end{itemize}
+\end{frame}
 
 %==========================================================================
 
