@@ -1,0 +1,142 @@
+%==========================================================================
+
+\begin{frame}[fragile]
+
+  {\Huge General Enhancements}
+
+  \vspace{10pt}
+
+\end{frame}
+
+%==========================================================================
+
+% Examples
+
+% note: always keep the [fragile] for your frames!
+
+%\begin{frame}[fragile]{Example list}
+%  \begin{itemize}
+%      \item Item 1
+%      \item Item 2 with some \texttt{code}
+%      \begin{itemize}
+%        \item Sub-item 2.1
+%        \item Sub-item 2.2
+%      \end{itemize}
+%  \end{itemize}
+%\end{frame}
+
+%\begin{frame}[fragile]{Example code}
+%    \begin{code}[keywords={std}]
+%        #include <iostream>
+%
+%        int main() {
+%            std::cout << "hello world\n";
+%        }
+%    \end{code}
+%\end{frame}
+
+%\begin{frame}[fragile]{Example table}
+%    \begin{center}
+%        \begin{tabular}{l|l}
+%            a & b \\\hline
+%            c & d
+%        \end{tabular}
+%    \end{center}
+%\end{frame}
+
+%==========================================================================
+
+\begin{frame}[fragile]{MDRange}
+  \begin{itemize}
+    \item Improvements on the MDRange internals on device when the iteration domain is small enough
+  \end{itemize}
+  \begin{center}
+    \includegraphics[width=0.5\textwidth]{no_grid_stride_loop.png}
+  \end{center}
+\end{frame}
+
+%==========================================================================
+
+\begin{frame}[fragile]{SIMD}
+  \begin{itemize}
+    \item Add \texttt{std::uint32\_t} support for NEON
+    \item Make the flag argument for memory operations optional
+    \begin{code}[breakatwhitespace=true,breaklines=true,language=C++]
+Experimental::simd<T> vec(ptr, Experimental::simd_flag_default);
+Experimental::simd_unchecked_store(vec, ptr, Experimental::simd_flag_default);
+    \end{code} \\
+      Becomes:
+    \begin{code}[language=C++]
+Experimental::simd<T> vec(ptr);
+Experimental::simd_unchecked_store(vec, ptr);
+    \end{code}
+  \end{itemize}
+\end{frame}
+
+%==========================================================================
+
+\begin{frame}[fragile]{Graph}
+  \begin{itemize}
+    \item Rename \texttt{native\_graph()} and \texttt{native\_graph\_exec()} to backend specific names \texttt{\{cuda,hip,sycl\}\_graph()} and \texttt{\{cuda,hip,sycl\}\_graph\_exec()}
+    \item Add a \texttt{GraphNodeKind} enum and allow to retrieve the node type
+    \begin{itemize}
+      \item at compile time: \texttt{NodeType::node\_kind}
+      \item at runtime: \texttt{node.get\_node\_kind()}
+    \end{itemize}
+    \item Allow access to vendor nodes with \texttt{node.\{cuda,hip,sycl\}\_node()}
+  \end{itemize}
+\end{frame}
+
+%==========================================================================
+
+\begin{frame}[fragile]{Miscellaneous (1/2)}
+  \begin{itemize}
+    \item Introduce \texttt{KOKKOS\_FORCEINLINE\_[CLASS\_]LAMBDA} macros
+    \item Support \texttt{FORCEINLINE} macros with MSVC
+    \item Support building and using Kokkos libraries as C++ modules with MSVC and GCC 16
+    \item Throw a new \texttt{Experimental::BadAlloc} exception on allocation failures
+    \item Increase the maximum level 1 scratch size from 20MB to 80MB
+  \end{itemize}
+\end{frame}
+
+%==========================================================================
+
+\begin{frame}[fragile]{Miscellaneous (2/2)}
+  \begin{itemize}
+    \item Make execution space's move constructor and assignment operator \texttt{noexcept}
+    \item Make \texttt{View}'s move constructor \texttt{noexcept}
+    \item Add signed \texttt{index\_type} and unsigned \texttt{size\_type} aliases to execution and memory spaces
+    \item Promote numeric traits out of the \texttt{Experimental::} namespace into \texttt{Kokkos::}
+    \item Use the mathematical constants from the standard library
+  \end{itemize}
+\end{frame}
+
+%==========================================================================
+
+\begin{frame}[fragile]{\texttt{create\_mirror\_view\_and\_copy}}
+  \begin{itemize}
+    \item Provide a \texttt{create\_mirror\_view\_and\_copy} overload without an explicit destination memory space
+    \begin{code}[breakatwhitespace=true,breaklines=true,language=C++]
+Kokkos::View<int*> view;
+auto host_mirror = Kokkos::create_mirror_view_and_copy(Kokkos::HostSpace(), view);
+// Uses View<int*>::host_mirror_type::memory_space{}
+auto host_mirror = Kokkos::create_mirror_view_and_copy(view);
+    \end{code}
+  \end{itemize}
+\end{frame}
+
+%==========================================================================
+
+\begin{frame}[fragile]{StdAlgorithms}
+  \begin{itemize}
+    \item Extract iterator related functions from \texttt{algorithms} to \texttt{core}
+      \begin{itemize}
+        \item \texttt{Kokkos::Experimental::begin}
+        \item \texttt{Kokkos::Experimental::end}
+        \item \texttt{Kokkos::Experimental::cbegin}
+        \item \texttt{Kokkos::Experimental::cend}
+        \item \texttt{Kokkos::Experimental::distance}
+      \end{itemize}
+    \item Check preconditions on view extents in the algorithms
+  \end{itemize}
+\end{frame}

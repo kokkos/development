@@ -1,0 +1,187 @@
+%==========================================================================
+
+\begin{frame}[fragile]
+
+  {\Huge Backend Updates}
+
+  \vspace{10pt}
+
+\end{frame}
+
+%==========================================================================
+
+% Examples
+
+% note: always keep the [fragile] for your frames!
+
+%\begin{frame}[fragile]{Example list}
+%  \begin{itemize}
+%      \item Item 1
+%      \item Item 2 with some \texttt{code}
+%      \begin{itemize}
+%        \item Sub-item 2.1
+%        \item Sub-item 2.2
+%      \end{itemize}
+%  \end{itemize}
+%\end{frame}
+
+%\begin{frame}[fragile]{Example code}
+%    \begin{code}[keywords={std}]
+%        #include <iostream>
+%
+%        int main() {
+%            std::cout << "hello world\n";
+%        }
+%    \end{code}
+%\end{frame}
+
+%\begin{frame}[fragile]{Example table}
+%    \begin{center}
+%        \begin{tabular}{l|l}
+%            a & b \\\hline
+%            c & d
+%        \end{tabular}
+%    \end{center}
+%\end{frame}
+
+%==========================================================================
+
+\begin{frame}[fragile]
+
+  {\Large CUDA}
+  \begin{itemize}
+    \item Support more than 48kB of scratch memory request for level 0 (shared memory)
+    \item Enable C++23 support with NVCC (available since CUDA 13.3.0)
+    \item Improve performance of load/store atomic by leveraging compiler built-ins instead of generating them via CAS
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]{Effect of contention on lock-free \texttt{atomic\_load/store} on Grace-Hopper 200}
+\begin{figure}[!htb]
+    \centering
+        \begin{minipage}{0.4\textwidth}
+        \centering
+        \begin{tikzpicture}
+          \begin{semilogxaxis}[
+              title={Grace},
+          width=1.0\textwidth,
+          height=1.0\textwidth,
+          log basis x = 10,
+          grid=major,
+          xmin=1,
+          xlabel={Contention},
+          %ylabel={Slowdown},
+          ymin=1,
+          ymax=100,
+          legend pos=north west
+          ]
+          %cpu
+          \addplot+[mark=o, color=green] coordinates {
+          (100,1.0)
+          (1000,1.1088313941)
+          (10000,2.5329092838)
+          (100000,7.6595455536)
+          (1000000,48.8640858911)
+           };
+          %cpu
+          \addplot+[mark=o, color=black] coordinates {
+          (100,9.02886777711)
+          (1000,16.3405593973)
+          (10000,26.2635370966)
+          (100000,39.1844956122)
+          (1000000,87.6812757724)
+              };
+        \legend{direct,cas-based}
+        \end{semilogxaxis}
+      \end{tikzpicture}
+    \end{minipage}
+    \begin{minipage}{.4\textwidth}
+        \centering
+        \begin{tikzpicture}
+          \begin{semilogxaxis}[
+              title={Hopper},
+          width=1.0\textwidth,
+          height=1.0\textwidth,
+          log basis x = 10,
+          grid=major,
+          xmin=1,
+          xlabel={Contention},
+          ylabel={Slowdown},
+          ymin=1,
+          ymax=100,
+          legend pos=north west
+          ]
+          %grace-hopper 200 reference on on-cas
+          %non-cas
+          %gpu
+          \addplot+[mark=x, color=green] coordinates {
+          (100,1.0)
+          (1000,1.0)
+          (10000,2.6924211572)
+          (100000,11.2185832364)
+          (1000000,21.6895538258)
+              };
+           % cas-based
+           %gpu
+           \addplot+[mark=x, color=black] coordinates {
+          (100,2.06410845404)
+          (1000,2.08026722305)
+          (10000,2.6912696104)
+          (100000,18.5523211491)
+          (1000000,368.08750952935)
+              };
+        \legend{direct,cas-based}
+        \end{semilogxaxis}
+      \end{tikzpicture}
+    \end{minipage}%
+    \caption{1e9 \texttt{atomic\_load/store} operations on \texttt{int} with various contention}
+\end{figure}
+\end{frame}
+
+%==========================================================================
+
+\begin{frame}[fragile]
+
+  {\Large HIP}
+  \begin{itemize}
+    \item Improve performance of load/store atomic by leveraging compiler built-ins instead of generating them via CAS
+    \item Add AMD GFX1151 (Strix Halo / Radeon 8060S) architecture support
+    \item Add AMD Radeon 860M / RDNA3.5 / gfx1152 architecture support
+    \item Add AMD GFX1101 (Radeon RX 7800 XT, RX 7700 XT, RX 7700) architecture support
+    \item Improve performance of \texttt{deep\_copy(v, 0)} on MI300A
+  \end{itemize}
+
+\end{frame}
+
+%==========================================================================
+
+\begin{frame}[fragile]
+
+  {\Large SYCL}
+  \begin{itemize}
+    \item Fix Windows build issues
+  \end{itemize}
+
+  \vspace{10pt}
+  {\Large OpenACC}
+  \begin{itemize}
+    \item Fix OpenACC \texttt{parallel\_scan} chunk boundary race
+  \end{itemize}
+
+  \vspace{10pt}
+  {\Large NextSilicon}
+  \begin{itemize}
+    \item Add initial and preliminary `NextSilicon` support
+  \end{itemize}
+
+  \vspace{10pt}
+  {\Large HPX}
+  \begin{itemize}
+    \item Fix team \texttt{parallel\_reduce} buffer indexing
+    \item Fix unregistering execution spaces on finalize
+  \end{itemize}
+
+\end{frame}
+%==========================================================================
+
