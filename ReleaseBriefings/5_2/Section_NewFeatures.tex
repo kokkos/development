@@ -10,6 +10,122 @@
 
 %==========================================================================
 
+\begin{frame}[fragile]{Self-Similar RangePolicy Interface}
+
+  \textbf{Generalizes \texttt{RangePolicy} to support both execution policies and team-level ranges}
+
+  \vspace{15pt}
+
+  Enables writing generic code callable from both host and device:
+
+  \begin{code}[keywords={template,class,const,KOKKOS_INLINE_FUNCTION,KOKKOS_LAMBDA,void,parallel_for,Kokkos,RangePolicy}]
+    template <class Exec, class X, class Y>
+    KOKKOS_INLINE_FUNCTION void sum_views(const Exec& exec, 
+                                          const X& x, const Y& y) {
+      Kokkos::parallel_for(Kokkos::RangePolicy(exec, 0, x.extent(0)),
+        KOKKOS_LAMBDA(const int& i) { x(i) += y(i); });
+    }
+  \end{code}
+
+  \vspace{10pt}
+
+  \small
+  \begin{itemize}
+    \item Can be called with execution space on host: \texttt{sum\_views(exec\_space, x, y);}
+    \item Can be called with team handle in device code: \texttt{sum\_views(team, x, y);}
+  \end{itemize}
+
+\end{frame}
+
+%==========================================================================
+
+\begin{frame}[fragile]{View with mdspan-style Template Arguments}
+
+  \textbf{Kokkos Views now support mdspan-compatible template parameters}
+
+  \vspace{15pt}
+
+  \begin{code}[keywords={View,ElementType,ExtentsType,LayoutType,AccessorType}]
+    View<ElementType, ExtentsType, LayoutType, AccessorType>
+  \end{code}
+
+  \vspace{15pt}
+
+  \begin{itemize}
+    \item Enables specifying index types other than \texttt{size\_t} for potentially smaller View memory footprint
+    \item Aligns with ISO C++ standard \texttt{std::mdspan}
+    \item Future: Opens path toward arbitrary rank Views (\texttt{>8}) and mixed static/dynamic dimensions
+  \end{itemize}
+
+\end{frame}
+
+%==========================================================================
+
+\begin{frame}[fragile]{SFC64 PRNG Added to Random Algorithms}
+
+  \textbf{New high-quality pseudo-random number generator with reproducible stream partitioning}
+
+  \vspace{15pt}
+
+  \begin{itemize}
+    \item $2^{64}$ unique streams from single 64-bit seed
+    \item Each stream has period length of at least $2^{64}$ (expected $2^{255}$)
+    \item Stream offset API enables reproducible distributed initialization
+    \item Compatible with existing generators API
+  \end{itemize}
+
+  \vspace{15pt}
+
+\end{frame}
+
+%==========================================================================
+
+\begin{frame}[fragile]{Rank-1 MDRangePolicy Support}
+
+  \textbf{Extends \texttt{MDRangePolicy} to support one-dimensional ranges}
+
+  \vspace{15pt}
+
+  \begin{itemize}
+    \item Enables rank-1 construction: 
+    
+    \begin{code}[keywords={MDRangePolicy,ExecSpace,Rank}]
+      MDRangePolicy<ExecSpace, Rank<1>>(0, N, tile_size)
+    \end{code}
+
+    \item GPU backends (CUDA/HIP/SYCL) use tile size 256
+    \item Host backends (OpenMP/Threads) use chunk-size logic like \texttt{RangePolicy}
+    \item Includes full \texttt{parallel\_for} and \texttt{parallel\_reduce} support
+  \end{itemize}
+
+  \vspace{10pt}
+
+\end{frame}
+
+%==========================================================================
+
+\begin{frame}[fragile]{create\_mirror\_view\_and\_copy Convenience Overload}
+
+  \textbf{New single-argument overload for mirroring and copying Views}
+
+  \vspace{15pt}
+
+  \begin{code}[keywords={auto,create_mirror_view_and_copy}]
+    // Old API (two arguments required)
+    auto mirror = Kokkos::create_mirror_view_and_copy(space, view);
+    
+    // New convenience overload (one argument)
+    auto mirror = Kokkos::create_mirror_view_and_copy(view);
+  \end{code}
+
+  \vspace{15pt}
+
+  \small Consistent with \texttt{create\_mirror()} and \texttt{create\_mirror\_view()}, simplifying View management
+
+\end{frame}
+
+%==========================================================================
+
 % Examples
 
 % note: always keep the [fragile] for your frames!
