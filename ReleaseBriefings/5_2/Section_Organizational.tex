@@ -10,6 +10,7 @@
   \textbf{Content:}
   \begin{itemize}
     \item Kokkos User Group @ HPSF Conference '26 (US)
+    \item Save the Date
     \item Mailing Lists
   \end{itemize}
 
@@ -33,13 +34,33 @@
 
 %==========================================================================
 
+\begin{frame}[fragile]{Save The Date}
+
+\textbf{KUG 2027 @ HPSFCon}
+\begin{itemize}
+\item April 12th - 16th in Montreal Canada
+\item Save the date website: \url{https://events.linuxfoundation.org/hpsf-conference/}
+\item Call for submissions expected mid September
+\end{itemize}
+
+\vspace{5pt}
+\textbf{Kokkos Tutorial @ SC26}
+\begin{itemize}
+\item November 15th-20th Chicago, IL (exact date tbd)
+\item Beginner tutorial with hands-on
+\item Let your colleagues know!
+\end{itemize}
+\end{frame}
+
+%==========================================================================
+
 \begin{frame}[fragile]{Citing Kokkos - Help us track the impact of Kokkos}
 
 \begin{itemize}
 \item Ensure reproducibility
   \begin{itemize}
   \item Version-specific citations for Core and Kernels since 5.0
-  \item Format: \emph{Kokkos Core v5.2.0, DOI: 10.5281/zenodo.18408291}
+  \item Format: \emph{Kokkos Core v5.2.0, DOI: 10.5281/zenodo.21648054}
   \item See \href{https://kokkos.org/about/releases/}{release page} to find the specific DOI for the version you used
   \end{itemize}
 \item In addition to that, please also cite relevant papers describing the component of the Ecosystem you used
@@ -65,10 +86,10 @@ Visit \url{https://kokkos.org/citing-kokkos/}
 \includegraphics[width=\linewidth]{5_1/kokkos-tea-time-playlist.jpg}
 \end{columns}
 
-\begin{block}{Next session scheduled for tomorrow}
-\emph{Parthenon – a performance portable block-structured adaptive mesh refinement framework}
-by Philipp Grete
-\end{block}
+%\begin{block}{Next session scheduled for tomorrow}
+%\emph{Parthenon – a performance portable block-structured adaptive mesh refinement framework}
+%by Philipp Grete
+%\end{block}
 
 Visit \url{https://kokkos.org/community/tea-time/}
 
@@ -78,20 +99,17 @@ Visit \url{https://kokkos.org/community/tea-time/}
 
 \begin{frame}[fragile]{Roadmap: Deprecation Clean-up}
 
-\begin{alertblock}{Kokkos 5.2: Major Removal}
-\begin{itemize}
-    \item Most \texttt{KOKKOS\_ENABLE\_DEPRECATED\_CODE\_4} paths will be \textbf{removed}.
-    \item \textbf{Action:} Compile with deprecation warnings enabled to identify remaining 4.x legacy code.
-\end{itemize}
-\end{alertblock}
+\begin{block}{Kokkos 5.2: Major Removal}
+   Most \texttt{KOKKOS\_ENABLE\_DEPRECATED\_CODE\_4} paths has been \textbf{removed}.
+\end{block}
 
-\begin{block}{Temporary Reprieve (Final Removal in 5.3)}
-These remain in 5.2 but will be deleted in the following release:
+\begin{alertblock}{Final Removal in 5.3}
+These remain in 5.2 but will be removed in 5.3:
 \begin{description}
     \item[\texttt{MemoryManaged}] $\rightarrow$ Use \texttt{MemoryTraits<>}
     \item[\texttt{View::HostMirror}] $\rightarrow$ Use \texttt{View::host\_mirror\_type}
 \end{description}
-\end{block}
+\end{alertblock}
 
 \begin{itemize}
     \item \textit{Note: Version 5.3 will have zero exceptions for 4.x legacy code.}
@@ -120,6 +138,15 @@ The legacy \texttt{View} implementation will be removed in 5.3.
 We need to address any blocking bugs or regressions before 5.3.
 \end{block}
 
+\end{frame}
+
+%==========================================================================
+
+\begin{frame}[fragile]{4.7 End of Life}
+\vspace{1.5cm}
+\begin{center}
+   \textbf{Extended support for 4.7 has reached its end.}
+\end{center}
 \end{frame}
 
 %==========================================================================
