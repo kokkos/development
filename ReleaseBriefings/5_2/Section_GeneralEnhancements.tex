@@ -199,20 +199,6 @@ Experimental::simd_unchecked_store(vec, ptr);
 
 %==========================================================================
 
-\begin{frame}[fragile]{\texttt{create\_mirror\_view\_and\_copy}}
-  \begin{itemize}
-    \item Provide a \texttt{create\_mirror\_view\_and\_copy} overload without an explicit destination memory space
-    \begin{code}[breakatwhitespace=true,breaklines=true,language=C++]
-Kokkos::View<int*> view;
-auto host_mirror = Kokkos::create_mirror_view_and_copy(Kokkos::HostSpace(), view);
-// Uses View<int*>::host_mirror_type::memory_space{}
-auto host_mirror = Kokkos::create_mirror_view_and_copy(view);
-    \end{code}
-  \end{itemize}
-\end{frame}
-
-%==========================================================================
-
 \begin{frame}[fragile]{StdAlgorithms}
   \begin{itemize}
     \item Extract iterator related functions from \texttt{algorithms} to \texttt{core}
