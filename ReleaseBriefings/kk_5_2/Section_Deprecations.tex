@@ -1,0 +1,17 @@
+\begin{frame}[fragile]
+
+  {\Huge Deprecations}
+
+  \vspace{10pt}
+
+\end{frame}
+
+\begin{frame}[fragile]{Deprecations}
+  Moving the InnerProductSpaceTraits from Kokkos to Kokkos Kernels header and namespace
+  \begin{itemize}
+  \item {\ttfamily Kokkos\_InnerProductSpaceTraits.hpp} $\rightarrow$ \\
+    \hspace{1cm}{\ttfamily KokkosKernels\_InnerProductSpaceTraits.hpp}
+  \item {\ttfamily [[deprecated("...")]] Kokkos::Details::InnerProductSpaceTraits} $\rightarrow$\\
+    {\ttfamily KokkosKernels::Details::InnerProductSpaceTraits}
+  \end{itemize}
+\end{frame}

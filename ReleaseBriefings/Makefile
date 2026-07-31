@@ -64,5 +64,8 @@ release-51:
 kk-release-51:
 	pdflatex kk-release-51
 
+kk-release-52:
+	pdflatex kk-release-52
+
 clean:
 	latexmk -c
