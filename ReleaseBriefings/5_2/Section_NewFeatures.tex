@@ -65,16 +65,22 @@
 
   \textbf{New high-quality pseudo-random number generator with reproducible stream partitioning}
 
-  \vspace{15pt}
-
   \begin{itemize}
-    \item $2^{64}$ unique streams from single 64-bit seed
-    \item Each stream has period length of at least $2^{64}$ (expected $2^{255}$)
-    \item Stream offset API enables reproducible distributed initialization
-    \item Compatible with existing generators API
+    \item $2^{64}$ streams from one 64-bit seed; period $\geq 2^{64}$ (expected $\sim 2^{255}$)
+    \item Pool can be initialized \textit{in parallel}, faster than XorShift for large pools
+    \item \texttt{seed\_offset} enables bit-reproducible distributed partitioning
+    \item Drop-in replacement for \texttt{Random\_XorShift64\_Pool}
   \end{itemize}
 
-  \vspace{15pt}
+  \begin{code}[keywords={Kokkos,Random_SFC64_Pool,parallel_for,rand,get_state,free_state,DefaultExecutionSpace,auto,uint64_t,double}]
+    // Pool 0 handles streams [0, 500), pool 1 handles streams [500, 1000)
+    // Identical results to a single pool of 1000 states with seed_offset 0.    
+    Kokkos::Random_SFC64_Pool<> 
+      pool0(seed, /*seed_offset=*/0,   /*num_states=*/500),
+      pool1(seed, /*seed_offset=*/500, /*num_states=*/500);
+
+    // ... use pool0 / pool1 exactly like Random_XorShift64_Pool
+  \end{code}
 
 \end{frame}
 
