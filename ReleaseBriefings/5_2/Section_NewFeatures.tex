@@ -89,24 +89,56 @@
 
 \begin{frame}[fragile]{View with mdspan-style Template Arguments}
 
-  \textbf{Kokkos Views now support mdspan-compatible template parameters}
 
-  \vspace{15pt}
+  \begin{itemize}
+    \item \texttt{std::mdspan} uses different style of arguments than classic \texttt{View}
+  \end{itemize}
 
   \begin{code}[keywords={View,ElementType,ExtentsType,LayoutType,AccessorType}]
-    View<ElementType, ExtentsType, LayoutType, AccessorType>
+    View<DataType, LayoutType, MemorySpace, MemoryTraits>
+
+    mdspan<ElementType, ExtentsType, LayoutType, AccessorType>
   \end{code}
 
+  \begin{itemize}
+     \item{\texttt{DataType} $\Rightarrow$ \texttt{ElementType} + \texttt{ExtentsType}}
+     \item{\texttt{LayoutType} $\Rightarrow$ \texttt{LayoutType}}
+     \item{\texttt{MemorySpace} + \texttt{MemoryTraits} $\Rightarrow$ \texttt{AccessorType}}
+  \end{itemize}
   \vspace{15pt}
 
+  \textbf{Kokkos Views now support mdspan-compatible template parameters}
   \begin{itemize}
     \item Enables specifying index types other than \texttt{size\_t} for potentially smaller View memory footprint
     \item Aligns with ISO C++ standard \texttt{std::mdspan}
-    \item Future: Opens path toward arbitrary rank Views (\texttt{>8}) and mixed static/dynamic dimensions
   \end{itemize}
 
 \end{frame}
 
+\begin{frame}[fragile]{View with mdspan-style Template Arguments}
+\textbf{Need to use \texttt{mdspan} compatible layout and accessors from Kokkos:}
+\begin{code}[keywords={layout_left, layout_right, layout_stride, layout_left_padded, layout_right_padded, Accessor}]
+   layout_left layout_right layout_stride
+   Experimental::layout_right_padded<Pad> Experimental::layout_left_padded<Pad>
+   Experimental::Accessor<ElementType, MemSpace, MemTraits>
+\end{code}
+
+\textbf{An Example:}
+\begin{code}
+  // before
+  View<T**, LayoutLeft, HostSpace, MemoryTraits<>>
+  // equivalent in new style:
+  View<T, dextents<size_t, 2>, layout_left, Accessor<T, HostSpace, MemoryTraits<>>>
+\end{code}
+
+\textbf{Current Limitations:}
+\begin{itemize}
+  \item None of the template arguments are defaulted.
+  \item Compiler warnings inside Kokkos when using \textit{signed} index types.
+  \item Arbitrarily mixing static/dynamic extents is not well tested.
+  \item Custom layouts and accessors not officially supported yet.
+\end{itemize}
+\end{frame}
 %==========================================================================
 
 \begin{frame}[fragile]{SFC64 PRNG Added to Random Algorithms}
@@ -144,7 +176,7 @@
     \item Enables rank-1 construction: 
     
     \begin{code}[keywords={MDRangePolicy,ExecSpace,Rank}]
-      MDRangePolicy<ExecSpace, Rank<1>>(0, N, tile_size)
+      MDRangePolicy<ExecSpace, Rank<1>>(0, N[, tile_size])
     \end{code}
 
     \item GPU backends (CUDA/HIP/SYCL) use tile size 256
@@ -167,7 +199,14 @@
   \begin{code}[keywords={auto,create_mirror_view_and_copy}]
     // Old API (two arguments required)
     auto mirror = Kokkos::create_mirror_view_and_copy(space, view);
-    
+  \end{code}
+
+  \begin{itemize}
+    \item Problem: If \texttt{view} uses \texttt{SharedSpace} using \texttt{HostSpace} as \texttt{space} argument will allocate a new \texttt{View}
+  \end{itemize}
+
+\textbf{Always get a host accessible copy - avoiding unnecessary allocation:}
+  \begin{code}[keywords={auto,create_mirror_view_and_copy}]
     // New convenience overload (one argument)
     auto mirror = Kokkos::create_mirror_view_and_copy(view);
   \end{code}
