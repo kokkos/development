@@ -11,6 +11,54 @@
 %==========================================================================
 
 \begin{frame}[fragile]{Self-Similar RangePolicy Interface}
+   \textbf{Kokkos always allowed reuse of functions on host and device}
+
+\begin{code}
+  KOKKOS_INLINE_FUNCTION
+  double awesome(double val, int a) {...}
+
+  void bar_host() {
+    double val = awesome(1.0, 2);
+    parallel_for("bar", N, KOKKOS_LAMBDA(int i) {
+      double val2 = awesome(val, 3);
+    });
+  }
+\end{code}
+
+\pause
+\vspace{1cm}
+\begin{center}
+\textbf{But what if \texttt{awesome} contains parallelism itself?}
+\end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Self-Similar RangePolicy Interface}
+   \textbf{You need to distinguish code paths!}
+\begin{itemize}
+  \item Different functions.
+  \item Policy factory.
+  \item \texttt{if constexpr}
+\end{itemize}
+
+\begin{code}
+  template<class ExecOrTeam>
+  KOKKOS_FUNCTION double awesome(const ExecOrTeam& exec, int M) {
+    if constexpr (is_execution_space_v<ExecOrTeam>) {
+      parallel_for(RangePolicy(exec, 0, M), KOKKOS_LAMBDA(int i) {
+        ...
+      });
+    } else {
+      parallel_for(TeamVectorRange(exec, 0, M), [&](int i) {
+        ...
+      });
+  } }
+\end{code}
+
+\pause
+\textbf{This still warns about calling host-only \texttt{parallel\_for} from host-device function!}
+\end{frame}
+
+\begin{frame}[fragile]{Self-Similar RangePolicy Interface}
 
   \textbf{Generalizes \texttt{RangePolicy} to support both execution policies and team-level ranges}
 
