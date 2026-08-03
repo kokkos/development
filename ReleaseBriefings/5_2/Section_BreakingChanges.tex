@@ -45,6 +45,12 @@
         \item \texttt{extent(r)}, \texttt{extent\_int(r)}, and \texttt{static\_extent(r)} with \texttt{r >= rank()} % #9076
         \item Still returns \texttt{1} when \texttt{Kokkos\_ENABLE\_DEPRECATED\_CODE\_5} is on (default)
       \end{itemize}
+    \begin{code}[language=C++]
+View<double**> a("a", 10, 20);
+a.extent(0);  // OK: 10
+a.extent(1);  // OK: 20
+a.extent(2);  // deprecated (rank is 2); returns 1 if DEPRECATED_CODE_5 on
+    \end{code}
   \end{itemize}
 \end{frame}
 
