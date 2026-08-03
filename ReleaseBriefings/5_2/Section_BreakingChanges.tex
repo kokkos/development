@@ -62,7 +62,7 @@ a.extent(2);  // deprecated (rank is 2); returns 1 if DEPRECATED_CODE_5 on
     \begin{code}[language=C++]
 deep_copy(v, v);  // precondition violation (was a no-op)
     \end{code}
-    \item \texttt{is_assignable(dst, src)} now returns false if \texttt{dst} is \texttt{const}
+    \item \texttt{is\_assignable(dst, src)} now returns false if \texttt{dst} is \texttt{const}
     \begin{code}[language=C++]
        View<int*> a("A",5) , b("B", 5);
        const View<int*> c_a = a;
