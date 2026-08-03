@@ -62,87 +62,13 @@ a.extent(2);  // deprecated (rank is 2); returns 1 if DEPRECATED_CODE_5 on
     \begin{code}[language=C++]
 deep_copy(v, v);  // precondition violation (was a no-op)
     \end{code}
-    \item \texttt{RangePolicy}: invalid bounds always \texttt{abort} (no empty \texttt{[0, 0)} fallback) % #9007
+    \item \texttt{is_assignable(dst, src)} now returns false if \texttt{dst} is \texttt{const}
     \begin{code}[language=C++]
-RangePolicy<>(100, 90);  // aborts: lower > upper
-    \end{code}
-    \item Also aborts on unsafe bound conversions (narrowing / signedness) % #9007
-    \begin{code}[language=C++]
-RangePolicy<unsigned>(-1, 10);  // signed -> unsigned
-std::int64_t n = /* > uint32 max */;
-RangePolicy<std::uint32_t>(0, n);  // narrowing
+       View<int*> a("A",5) , b("B", 5);
+       const View<int*> c_a = a;
+       assert(is_assignable(c_a, b)); // fails since 5.2
     \end{code}
   \end{itemize}
-\end{frame}
-
-%==========================================================================
-
-\begin{frame}[fragile]{\texttt{DualView::view\_\{host,device\}()}}
-  \begin{itemize}
-    \item Now return a \texttt{const} reference into the \texttt{DualView} (was by value) % #9009 (fixup of #8980)
-    \begin{code}[language=C++]
-// before: copy of the View handle
-t_host view_host()  const { return h_view; }
-t_dev  view_device() const { return d_view; }
-
-// after: const reference to the stored View
-const t_host& view_host()  const { return h_view; }
-const t_dev&  view_device() const { return d_view; }
-    \end{code}
-    \item Callers that need an independent handle must copy explicitly:
-    \begin{code}[language=C++]
-auto h = dv.view_host();  // const View&
-typename DualView::t_host h_copy = dv.view_host();
-    \end{code}
-  \end{itemize}
-\end{frame}
-
-%==========================================================================
-
-\begin{frame}[fragile]{Removed deprecated options and macros}
-  Most code guarded by \texttt{KOKKOS\_ENABLE\_DEPRECATED\_CODE\_4} is removed in 5.2 % #8957 #8966 #8980 #9002 #9013 #9005 #9029 #9008
-  \begin{itemize}
-    \item CMake options removed (behavior now unconditional):
-      \begin{itemize}
-        \item \texttt{Kokkos\_ENABLE\_CUDA\_UVM} (use \texttt{SharedSpace}) % #8968
-        \item \texttt{Kokkos\_ENABLE\_CUDA\_LAMBDA} (device lambdas always enabled) % #8960
-        \item \texttt{Kokkos\_ENABLE\_CUDA\_LDG\_INTRINSIC} (LDG always enabled) % #8960
-        \item \texttt{Kokkos\_ENABLE\_DEBUG\_DUALVIEW\_MODIFY\_CHECK} (check always on) % #9010
-      \end{itemize}
-    \item Also removed: \texttt{KOKKOS\_MEMORY\_ALIGNMENT[\_THRESHOLD]},
-      \texttt{KOKKOS\_NONTEMPORAL\_PREFETCH\_\{LOAD,STORE\}} % #9002
-    \item \texttt{MemoryManaged} and \texttt{View::HostMirror} retained until 5.3 % deferred in #9002 / #8958
-  \end{itemize}
-\end{frame}
-
-%==========================================================================
-
-\begin{frame}[fragile]{Notable API removals (1/2)}
-  \begin{itemize}
-    \item \texttt{DualView::\{h,d\}\_view} $\rightarrow$ use \texttt{view\_\{host,device\}()} % #8980
-    \item \texttt{StaticCrsGraph} container removed (use Kokkos Kernels) % #8980
-    \item Atomics: \texttt{atomic\_\{assign,increment,decrement,compare\_exchange\_strong\}} % #8980
-    \item \texttt{Experimental::swap} $\rightarrow$ \texttt{Kokkos::kokkos\_swap} % #8966
-    \item \texttt{ExecutionSpace::in\_parallel()} % #8966
-    \item \texttt{View::stride\_N()}, out-of-rank \texttt{View::stride(i)} % #9029
-    \item \texttt{ViewTraits::is\_\{hostspace,managed,random\_access\}} % #9029
-  \end{itemize}
-\end{frame}
-
-%==========================================================================
-
-\begin{frame}[fragile]{Notable API removals (2/2)}
-  \begin{itemize}
-    \item SIMD: deprecated load/store names and \texttt{\{const\_\}where\_expression} % #9008
-    \item \texttt{ErrorReporter}: old \texttt{get*} APIs (use \texttt{capacity()}, \texttt{num\_reports()}, \ldots) % #9013
-    \item \texttt{\{Owning,Observing\}RawPtr}, \texttt{KOKKOS\_ATTRIBUTE\_NODISCARD} % #9013
-    \item \texttt{Random\_XorShift\{64,1024\}\_Pool::init} % #9013
-    \item \texttt{Experimental::subview(OffsetView, \ldots)} $\rightarrow$ \texttt{Kokkos::subview} % #9029
-    \item \texttt{MemorySpaceAccess::deepcopy} % #9018
-  \end{itemize}
-\begin{alertblock}{Note}
-Remaining deprecated-code-4 APIs targeted for removal in 5.3 % #8958
-\end{alertblock}
 \end{frame}
 
 
