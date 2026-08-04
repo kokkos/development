@@ -13,7 +13,7 @@
 \begin{frame}[fragile]{Self-Similar RangePolicy Interface}
    \textbf{Kokkos always allowed reuse of functions on host and device}
 
-\begin{code}
+\begin{code}[keywords={awesome,template,TeamVectorRange,is_execution_space_v,class,const,KOKKOS_FUNCTION,KOKKOS_INLINE_FUNCTION,KOKKOS_LAMBDA,void,parallel_for,Kokkos,RangePolicy}]
   KOKKOS_INLINE_FUNCTION
   double awesome(double val, int a) {...}
 
@@ -40,7 +40,7 @@
   \item \texttt{if constexpr}
 \end{itemize}
 
-\begin{code}
+\begin{code}[keywords={awesome,template,TeamVectorRange,is_execution_space_v,class,const,KOKKOS_FUNCTION,KOKKOS_INLINE_FUNCTION,KOKKOS_LAMBDA,void,parallel_for,Kokkos,RangePolicy}]
   template<class ExecOrTeam>
   KOKKOS_FUNCTION double awesome(const ExecOrTeam& exec, int M) {
     if constexpr (is_execution_space_v<ExecOrTeam>) {
@@ -94,7 +94,7 @@
     \item \texttt{std::mdspan} uses different style of arguments than classic \texttt{View}
   \end{itemize}
 
-  \begin{code}[keywords={View,ElementType,ExtentsType,LayoutType,AccessorType}]
+  \begin{code}[keywords={DataType,LayoutType,MemorySpace,MemoryTraits,ElementType,ExtentsType,LayoutType,AccessorType}]
     View<DataType, LayoutType, MemorySpace, MemoryTraits>
 
     mdspan<ElementType, ExtentsType, LayoutType, AccessorType>
