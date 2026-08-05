@@ -1,0 +1,45 @@
+\begin{frame}[fragile]
+
+  {\Huge New Features}
+
+  \vspace{10pt}
+
+\end{frame}
+
+\begin{frame}[fragile]{New Features: LAPACK}
+  After adding {\ttfamily KokkosLapack::geqrf} to decompose matrices in 5.1 we now add support to apply and/or compute Q
+  \begin{itemize}
+  \item {\ttfamily KokkosLapack::gemqr}
+  \item {\ttfamily KokkosLapack::gegqr}
+  \end{itemize}
+  Also bringing support for Cholesky decomposition with the following kernels:
+  \begin{itemize}
+  \item {\ttfamily KokkosLapack::potrf}
+  \item {\ttfamily KokkosLapack::potrs}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{New Features: Batched Dense}
+  New kernels:
+  \begin{itemize}
+  \item scaled l2 norm computation
+  \item serial, team and teamvector implementations of rot, rotg, rotm and rotmg.
+  \item batched swap
+  \item batched norm with support for $\ell_1$, $\ell_2$ and $\ell_\infty$
+  \end{itemize}
+  New variants:
+  \begin{itemize}
+  \item Implement Team and TeamVector Iamax
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Sparse}
+  Support conjugate mode for sparse matrix transpose:
+  \begin{itemize}
+  \item {\footnotesize\ttfamily template <typename crsMat\_t>\\ crsMat\_t transpose\_matrix(const crsMat\_t \&A, const bool conjugate\_values=false);}
+  \end{itemize}
+  Add merge-path algorithms for load balancing:
+  \begin{itemize}
+  \item {\footnotesize\ttfamily template <typename CView, typename ExecSpace, typename AView, typename BView>\\ CView merge(const ExecSpace \&space, const AView \&a, const BView \&b)}
+  \end{itemize}
+\end{frame}
