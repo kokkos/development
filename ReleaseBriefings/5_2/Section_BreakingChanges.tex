@@ -1,0 +1,109 @@
+%==========================================================================
+% Tracking: https://github.com/kokkos/kokkos/issues/8958
+% Deprecations and Breaking Changes PRs
+% https://github.com/kokkos/kokkos/pull/9033
+% https://github.com/kokkos/kokkos/pull/9076
+% https://github.com/kokkos/kokkos/pull/9075
+% https://github.com/kokkos/kokkos/pull/9072
+% https://github.com/kokkos/kokkos/pull/9074
+% https://github.com/kokkos/kokkos/pull/8957
+% https://github.com/kokkos/kokkos/pull/8966
+% https://github.com/kokkos/kokkos/pull/8980
+% https://github.com/kokkos/kokkos/pull/9009
+% https://github.com/kokkos/kokkos/pull/9002
+% https://github.com/kokkos/kokkos/pull/9013
+% https://github.com/kokkos/kokkos/pull/9007
+% https://github.com/kokkos/kokkos/pull/9005
+% https://github.com/kokkos/kokkos/pull/9029
+% https://github.com/kokkos/kokkos/pull/9008
+% https://github.com/kokkos/kokkos/pull/8968
+% https://github.com/kokkos/kokkos/pull/8960
+% https://github.com/kokkos/kokkos/pull/9010
+% https://github.com/kokkos/kokkos/pull/9018
+% https://github.com/kokkos/kokkos/pull/9232
+
+%==========================================================================
+
+\begin{frame}[fragile]
+
+  {\Huge Deprecations and Breaking Changes}
+
+  \vspace{10pt}
+
+\end{frame}
+
+%==========================================================================
+
+\begin{frame}[fragile]{Deprecations}
+  \begin{itemize}
+    \item Deprecate \texttt{Experimental::\{HIP,SYCL\}} aliases and related memory spaces % #9232
+      \begin{itemize}
+        \item Use \texttt{Kokkos::HIP} / \texttt{Kokkos::SYCL} (and matching spaces) instead
+      \end{itemize}
+    \item Deprecate out-of-rank \texttt{View} extent queries to align with \texttt{mdspan} % #9076
+      \begin{itemize}
+        \item \texttt{extent(r)}, \texttt{extent\_int(r)}, and \texttt{static\_extent(r)} with \texttt{r >= rank()} % #9076
+        \item Still returns \texttt{1} when \texttt{Kokkos\_ENABLE\_DEPRECATED\_CODE\_5} is on (default)
+      \end{itemize}
+    \begin{code}[language=C++]
+View<double**> a("a", 10, 20);
+a.extent(0);  // OK: 10
+a.extent(1);  // OK: 20
+a.extent(2);  // deprecated (rank is 2); returns 1 if DEPRECATED_CODE_5 on
+    \end{code}
+  \end{itemize}
+\end{frame}
+
+%==========================================================================
+
+\begin{frame}[fragile]{Breaking Changes}
+  \begin{itemize}
+    \item \texttt{deep\_copy(dst, src)} aborts if the \texttt{View} arguments are identical % #9033
+    \begin{code}[language=C++]
+deep_copy(v, v);  // precondition violation (was a no-op)
+    \end{code}
+    \item \texttt{is\_assignable(dst, src)} now returns false if \texttt{dst} is \texttt{const}
+    \begin{code}[language=C++]
+       View<int*> a("A",5) , b("B", 5);
+       const View<int*> c_a = a;
+       assert(is_assignable(c_a, b)); // fails since 5.2
+    \end{code}
+  \end{itemize}
+\end{frame}
+
+
+% Examples
+
+% note: always keep the [fragile] for your frames!
+
+%\begin{frame}[fragile]{Example list}
+%  \begin{itemize}
+%      \item Item 1
+%      \item Item 2 with some \texttt{code}
+%      \begin{itemize}
+%        \item Sub-item 2.1
+%        \item Sub-item 2.2
+%      \end{itemize}
+%  \end{itemize}
+%\end{frame}
+
+%\begin{frame}[fragile]{Example code}
+%    \begin{code}[keywords={std}]
+%        #include <iostream>
+%
+%        int main() {
+%            std::cout << "hello world\n";
+%        }
+%    \end{code}
+%\end{frame}
+
+%\begin{frame}[fragile]{Example table}
+%    \begin{center}
+%        \begin{tabular}{l|l}
+%            a & b \\\hline
+%            c & d
+%        \end{tabular}
+%    \end{center}
+%\end{frame}
+
+%==========================================================================

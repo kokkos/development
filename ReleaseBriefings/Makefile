@@ -1,5 +1,5 @@
 
-default: release-51
+default: release-52
 
 workaround-on:
 	sed -i.bak 's|%\\input|\\input|g' KokkosTutorial_PreTitle.tex
@@ -64,6 +64,9 @@ release-51:
 kk-release-51:
 	pdflatex kk-release-51
 
+release-52:
+	latexmk release-52
+  
 kk-release-52:
 	pdflatex kk-release-52
 

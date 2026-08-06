@@ -1,0 +1,103 @@
+%==========================================================================
+
+\begin{frame}[fragile]
+
+  {\Huge Backend Updates}
+
+  \vspace{10pt}
+
+\end{frame}
+
+%==========================================================================
+
+% Examples
+
+% note: always keep the [fragile] for your frames!
+
+%\begin{frame}[fragile]{Example list}
+%  \begin{itemize}
+%      \item Item 1
+%      \item Item 2 with some \texttt{code}
+%      \begin{itemize}
+%        \item Sub-item 2.1
+%        \item Sub-item 2.2
+%      \end{itemize}
+%  \end{itemize}
+%\end{frame}
+
+%\begin{frame}[fragile]{Example code}
+%    \begin{code}[keywords={std}]
+%        #include <iostream>
+%
+%        int main() {
+%            std::cout << "hello world\n";
+%        }
+%    \end{code}
+%\end{frame}
+
+%\begin{frame}[fragile]{Example table}
+%    \begin{center}
+%        \begin{tabular}{l|l}
+%            a & b \\\hline
+%            c & d
+%        \end{tabular}
+%    \end{center}
+%\end{frame}
+
+%==========================================================================
+
+\begin{frame}[fragile]
+
+  {\Large CUDA}
+  \begin{itemize}
+    \item Support more than 48kB of scratch memory request for level 0 (shared memory)
+    \item Enable C++23 support with NVCC (available since CUDA 13.3.0)
+  \end{itemize}
+
+\end{frame}
+
+%==========================================================================
+
+\begin{frame}[fragile]
+
+  {\Large HIP}
+  \begin{itemize}
+    \item Add AMD GFX1151 (Strix Halo / Radeon 8060S) architecture support
+    \item Add AMD Radeon 860M / RDNA3.5 / gfx1152 architecture support
+    \item Add AMD GFX1101 (Radeon RX 7800 XT, RX 7700 XT, RX 7700) architecture support
+    \item Improve performance of \texttt{deep\_copy(v, 0)} on MI300A
+  \end{itemize}
+
+\end{frame}
+
+%==========================================================================
+
+\begin{frame}[fragile]
+
+  {\Large SYCL}
+  \begin{itemize}
+    \item Fix Windows build issues
+  \end{itemize}
+
+  \vspace{10pt}
+  {\Large OpenACC}
+  \begin{itemize}
+    \item Fix OpenACC \texttt{parallel\_scan} chunk boundary race
+  \end{itemize}
+
+  \vspace{10pt}
+  {\Large NextSilicon}
+  \begin{itemize}
+    \item Add initial and preliminary `NextSilicon` support
+  \end{itemize}
+
+  \vspace{10pt}
+  {\Large HPX}
+  \begin{itemize}
+    \item Fix team \texttt{parallel\_reduce} buffer indexing
+    \item Fix unregistering execution spaces on finalize
+  \end{itemize}
+
+\end{frame}
+%==========================================================================
+

@@ -1,0 +1,256 @@
+%==========================================================================
+
+\begin{frame}[fragile]
+
+  {\Huge Feature highlights}
+
+  \vspace{10pt}
+
+\end{frame}
+
+%==========================================================================
+
+\begin{frame}[fragile]{Self-Similar RangePolicy Interface}
+   \textbf{Kokkos always allowed reuse of functions on host and device}
+
+\begin{code}[keywords={awesome,template,TeamVectorRange,is_execution_space_v,class,const,KOKKOS_FUNCTION,KOKKOS_INLINE_FUNCTION,KOKKOS_LAMBDA,void,parallel_for,Kokkos,RangePolicy}]
+  KOKKOS_INLINE_FUNCTION
+  double awesome(double val, int a) {...}
+
+  void bar_host() {
+    double val = awesome(1.0, 2);
+    parallel_for("bar", N, KOKKOS_LAMBDA(int i) {
+      double val2 = awesome(val, 3);
+    });
+  }
+\end{code}
+
+\pause
+\vspace{1cm}
+\begin{center}
+\textbf{But what if \texttt{awesome} contains parallelism itself?}
+\end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Self-Similar RangePolicy Interface}
+   \textbf{You need to distinguish code paths!}
+\begin{itemize}
+  \item Different functions.
+  \item Policy factory.
+  \item \texttt{if constexpr}
+\end{itemize}
+
+\begin{code}[keywords={awesome,template,TeamVectorRange,is_execution_space_v,class,const,KOKKOS_FUNCTION,KOKKOS_INLINE_FUNCTION,KOKKOS_LAMBDA,void,parallel_for,Kokkos,RangePolicy}]
+  template<class ExecOrTeam>
+  KOKKOS_FUNCTION double awesome(const ExecOrTeam& exec, int M) {
+    if constexpr (is_execution_space_v<ExecOrTeam>) {
+      parallel_for(RangePolicy(exec, 0, M), KOKKOS_LAMBDA(int i) {
+        ...
+      });
+    } else {
+      parallel_for(TeamVectorRange(exec, 0, M), [&](int i) {
+        ...
+      });
+  } }
+\end{code}
+
+\pause
+\textbf{This still warns about calling host-only \texttt{parallel\_for} from host-device function!}
+\end{frame}
+
+\begin{frame}[fragile]{Self-Similar RangePolicy Interface}
+
+  \textbf{Generalizes \texttt{RangePolicy} to support both execution policies and team-level ranges}
+
+  \vspace{15pt}
+
+  Enables writing generic code callable from both host and device:
+
+  \begin{code}[keywords={template,class,const,KOKKOS_INLINE_FUNCTION,KOKKOS_LAMBDA,void,parallel_for,Kokkos,RangePolicy}]
+    template <class Exec, class X, class Y>
+    KOKKOS_INLINE_FUNCTION void sum_views(const Exec& exec, 
+                                          const X& x, const Y& y) {
+      Kokkos::parallel_for(Kokkos::RangePolicy(exec, 0, x.extent(0)),
+        KOKKOS_LAMBDA(const int& i) { x(i) += y(i); });
+    }
+  \end{code}
+
+  \vspace{10pt}
+
+  \small
+  \begin{itemize}
+    \item Can be called with execution space on host: \texttt{sum\_views(exec\_space, x, y);}
+    \item Can be called with team handle in device code: \texttt{sum\_views(team, x, y);}
+  \end{itemize}
+
+\end{frame}
+
+%==========================================================================
+
+\begin{frame}[fragile]{View with mdspan-style Template Arguments}
+
+
+  \begin{itemize}
+    \item \texttt{std::mdspan} uses different style of arguments than classic \texttt{View}
+  \end{itemize}
+
+  \begin{code}[keywords={DataType,LayoutType,MemorySpace,MemoryTraits,ElementType,ExtentsType,LayoutType,AccessorType}]
+    View<DataType, LayoutType, MemorySpace, MemoryTraits>
+
+    mdspan<ElementType, ExtentsType, LayoutType, AccessorType>
+  \end{code}
+
+  \begin{itemize}
+     \item{\texttt{DataType} $\Rightarrow$ \texttt{ElementType} + \texttt{ExtentsType}}
+     \item{\texttt{LayoutType} $\Rightarrow$ \texttt{LayoutType}}
+     \item{\texttt{MemorySpace} + \texttt{MemoryTraits} $\Rightarrow$ \texttt{AccessorType}}
+  \end{itemize}
+  \vspace{15pt}
+
+  \textbf{Kokkos Views now support mdspan-compatible template parameters}
+  \begin{itemize}
+    \item Enables specifying index types other than \texttt{size\_t} for potentially smaller View memory footprint
+    \item Aligns with ISO C++ standard \texttt{std::mdspan}
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]{View with mdspan-style Template Arguments}
+\textbf{Need to use \texttt{mdspan} compatible layout and accessors from Kokkos:}
+\begin{code}[keywords={layout_left, layout_right, layout_stride, layout_left_padded, layout_right_padded, Accessor}]
+   layout_left layout_right layout_stride
+   Experimental::layout_right_padded<Pad> Experimental::layout_left_padded<Pad>
+   Experimental::Accessor<ElementType, MemSpace, MemTraits>
+\end{code}
+
+\textbf{An Example:}
+\begin{code}
+  // before
+  View<T**, LayoutLeft, HostSpace, MemoryTraits<>>
+  // equivalent in new style:
+  View<T, dextents<size_t, 2>, layout_left, Accessor<T, HostSpace, MemoryTraits<>>>
+\end{code}
+
+\textbf{Current Limitations:}
+\begin{itemize}
+  \item None of the template arguments are defaulted.
+  \item Compiler warnings inside Kokkos when using \textit{signed} index types.
+  \item Arbitrarily mixing static/dynamic extents is not well tested.
+  \item Custom layouts and accessors not officially supported yet.
+\end{itemize}
+\end{frame}
+%==========================================================================
+
+\begin{frame}[fragile]{SFC64 PRNG Added to Random Algorithms}
+
+  \textbf{New high-quality pseudo-random number generator with reproducible stream partitioning}
+
+  \begin{itemize}
+    \item $2^{64}$ streams from one 64-bit seed; period $\geq 2^{64}$ (expected $\sim 2^{255}$)
+    \item Pool can be initialized \textit{in parallel}, faster than XorShift for large pools
+    \item \texttt{seed\_offset} enables bit-reproducible distributed partitioning
+    \item Drop-in replacement for \texttt{Random\_XorShift64\_Pool}
+  \end{itemize}
+
+  \begin{code}[keywords={Kokkos,Random_SFC64_Pool,parallel_for,rand,get_state,free_state,DefaultExecutionSpace,auto,uint64_t,double}]
+    // Pool 0 handles streams [0, 500), pool 1 handles streams [500, 1000)
+    // Identical results to a single pool of 1000 states with seed_offset 0.    
+    Kokkos::Random_SFC64_Pool<> 
+      pool0(seed, /*seed_offset=*/0,   /*num_states=*/500),
+      pool1(seed, /*seed_offset=*/500, /*num_states=*/500);
+
+    // ... use pool0 / pool1 exactly like Random_XorShift64_Pool
+  \end{code}
+
+\end{frame}
+
+%==========================================================================
+
+\begin{frame}[fragile]{Rank-1 MDRangePolicy Support}
+
+  \textbf{Extends \texttt{MDRangePolicy} to support one-dimensional ranges}
+
+  \vspace{15pt}
+
+  \begin{itemize}
+    \item Enables rank-1 construction: 
+    
+    \begin{code}[keywords={MDRangePolicy,ExecSpace,Rank}]
+      MDRangePolicy<ExecSpace, Rank<1>>(0, N[, tile_size])
+    \end{code}
+
+    \item GPU backends (CUDA/HIP/SYCL) use tile size 256
+    \item Host backends (OpenMP/Threads) use chunk-size logic like \texttt{RangePolicy}
+    \item Includes full \texttt{parallel\_for} and \texttt{parallel\_reduce} support
+  \end{itemize}
+
+  \vspace{10pt}
+
+\end{frame}
+
+%==========================================================================
+
+\begin{frame}[fragile]{create\_mirror\_view\_and\_copy Convenience Overload}
+
+  \textbf{New single-argument overload for mirroring and copying Views}
+
+  \vspace{15pt}
+
+  \begin{code}[keywords={auto,create_mirror_view_and_copy}]
+    // Old API (two arguments required)
+    auto mirror = Kokkos::create_mirror_view_and_copy(space, view);
+  \end{code}
+
+  \begin{itemize}
+    \item Problem: If \texttt{view} uses \texttt{SharedSpace} using \texttt{HostSpace} as \texttt{space} argument will allocate a new \texttt{View}
+  \end{itemize}
+
+\textbf{Always get a host accessible copy - avoiding unnecessary allocation:}
+  \begin{code}[keywords={auto,create_mirror_view_and_copy}]
+    // New convenience overload (one argument)
+    auto mirror = Kokkos::create_mirror_view_and_copy(view);
+  \end{code}
+
+  \vspace{15pt}
+
+  \small Consistent with \texttt{create\_mirror()} and \texttt{create\_mirror\_view()}, simplifying View management
+
+\end{frame}
+
+%==========================================================================
+
+% Examples
+
+% note: always keep the [fragile] for your frames!
+
+%\begin{frame}[fragile]{Example list}
+%  \begin{itemize}
+%      \item Item 1
+%      \item Item 2 with some \texttt{code}
+%      \begin{itemize}
+%        \item Sub-item 2.1
+%        \item Sub-item 2.2
+%      \end{itemize}
+%  \end{itemize}
+%\end{frame}
+
+%\begin{frame}[fragile]{Example code}
+%    \begin{code}[keywords={std}]
+%        #include <iostream>
+%
+%        int main() {
+%            std::cout << "hello world\n";
+%        }
+%    \end{code}
+%\end{frame}
+
+%\begin{frame}[fragile]{Example table}
+%    \begin{center}
+%        \begin{tabular}{l|l}
+%            a & b \\\hline
+%            c & d
+%        \end{tabular}
+%    \end{center}
+%\end{frame}
+
+%==========================================================================

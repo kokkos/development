@@ -1,0 +1,123 @@
+%==========================================================================
+
+\begin{frame}[fragile]
+
+  {\Huge Kokkos Tools 5.2}
+
+  \vspace{15pt}
+
+  \textbf{Content:}
+  \begin{itemize}
+    \item Aligned release cycle with Kokkos Core
+    \item Maturing life-cycle stage and testing status
+  \end{itemize}
+
+\end{frame}
+
+%==========================================================================
+
+\begin{frame}[fragile]{Kokkos Tools 5.2 --- Overview}
+
+  \textbf{Aligned release:} Kokkos Tools \textbf{5.2} ships with the Kokkos Core 5.2 cycle.
+
+  \vspace{8pt}
+
+  Lightweight profiling and debugging utilities that hook into the Kokkos runtime.
+  Allows for Kokkos-centric analysis (kernel labels, Views) vs.\ vendor tools alone (NVTX, ROCTx, \ldots).
+
+  \vspace{8pt}
+
+  \begin{itemize}
+    \item Load at runtime via \texttt{KOKKOS\_TOOLS\_LIBS} or \texttt{--kokkos-tools-libs}
+    \item No application rebuild required (needs \texttt{Kokkos\_ENABLE\_LIBDL=ON})
+    \item CMake build; C++20 required
+  \end{itemize}
+
+  \vspace{6pt}
+
+  \textbf{Docs:} \url{https://github.com/kokkos/kokkos-tools/wiki}
+  \newline
+  \textbf{Repo:} \url{https://github.com/kokkos/kokkos-tools}
+
+\end{frame}
+
+%==========================================================================
+%
+%\begin{frame}[fragile]{Available Tools (Built-in)}
+%
+%  \footnotesize
+%  \begin{tabular}{lll}
+%    \textbf{Category} & \textbf{Tool} & \textbf{Library} \\\hline
+%    Utilities
+%      & KernelFilter & \texttt{kp\_kernel\_filter} \\
+%      & KernelSampler & \texttt{kp\_kokkos\_sampler} \\
+%    Kernel inspection
+%      & KernelLogger & \texttt{kp\_kernel\_logger} \\
+%      & SimpleKernelTimer & \texttt{kp\_kernel\_timer} \\
+%      & SpaceTimeStack & \texttt{kp\_space\_time\_stack} \\
+%      & ChromeTracing & \texttt{kp\_chrome\_tracing} \\
+%    Memory analysis
+%      & MemoryHighWater & \texttt{kp\_hwm} \\
+%      & MemoryHighWater MPI & \texttt{kp\_hwm\_mpi} \\
+%      & MemoryUsage & \texttt{kp\_memory\_usage} \\
+%      & MemoryEvents & \texttt{kp\_memory\_events} \\
+%    Helpers
+%      & Reader / JSON writer & \texttt{kp\_reader}, \texttt{kp\_json\_writer} \\
+%  \end{tabular}
+%
+%  \vspace{8pt}
+%  \begin{itemize}
+%    \item Connectors: NVTX(/Focused), ROCTX, VTune(/Focused), PAPI, SystemTap,
+%          Variorum, Perfetto, Caliper, Apex
+%  \end{itemize}
+%
+%\end{frame}
+%
+%==========================================================================
+
+\begin{frame}[fragile]{Testing Status}
+  \footnotesize
+  \vspace{4pt}
+  \begin{block}{Life-cycle}
+    Kokkos Tools is at the \textbf{Maturing} stage in the
+    \href{https://github.com/kokkos/governance/blob/main/Life-Cycle.md}{Kokkos life-cycle}.
+    We are ramping up testing and CI coverage.
+  \end{block}
+  Currently expanding testing and CI coverage:
+  \begin{itemize}
+    \item \textbf{CI:} PR builds track Kokkos 5.2; nightlies track \texttt{develop}.
+      \vspace{2pt}
+      \begin{center}
+      \begin{tabular}{l|c|c}
+        \textbf{Backend} & \textbf{Compile} & \textbf{Runtime} \\\hline
+        OpenMP & yes & yes \\
+        CUDA 12.2 / 12.9 & yes & --- \\
+        ROCm HIP 6.2 / 6.3 & yes & --- \\
+        Standalone & yes & --- \\
+      \end{tabular}
+      \end{center}
+    \item \textbf{LAMMPS sanity (Hopper, CUDA):}
+          \texttt{lmp -k on g 1 -sf kk -in scripts/in.lj.short}
+          \newline
+          Passed all tool checks.
+          (Tracking: \href{https://github.com/kokkos/kokkos-tools/issues/338}{kokkos-tools\#338})
+  \end{itemize}
+
+\end{frame}
+
+%==========================================================================
+%
+%\begin{frame}[fragile]{5.2 Highlights}
+%
+%  \begin{itemize}
+%    \item SpaceTimeStack deep-copy hook tests; MPI imbalance printing threshold
+%    \item SimpleKernelTimer ASCII stdout + unit tests; JSON total/kernel time fix
+%    \item KernelFilter reduce-event forwarding fix
+%    \item NVTX ``not built'' status message
+%    \item README / wiki documentation refresh (wiki is primary docs)
+%    \item CI action dependency updates
+%  \end{itemize}
+%
+%\end{frame}
+%
+%==========================================================================
