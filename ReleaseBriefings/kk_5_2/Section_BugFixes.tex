@@ -1,0 +1,17 @@
+\begin{frame}[fragile]
+
+  {\Huge Bug Fixes}
+
+  \vspace{10pt}
+
+\end{frame}
+
+\begin{frame}[fragile]{Bug Fixes}
+  \begin{itemize}
+  \item Fix call to {\ttfamily KokkosBlas::scal()} in {\ttfamily KokkosBlas::gemm()} that was missing an execution space instance.
+  \item Graph Coarsening team policy uses at most {\ttfamily vector\_length\_max()} instead of hard coded values.
+  \item Householder reflector computation kernels uses math function overloaded for Sacado types.
+  \item Remove calls to {\ttfamily rand()} in favor of c++ standard library equivalent for Windows support.
+  \item In {\ttfamily KokkosSparse::SPGEMMHandle} constructor we no longer overwrite {\ttfamily SPGEMM\_DEFAULT} with host based algorithm
+  \end{itemize}
+\end{frame}

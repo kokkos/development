@@ -1,0 +1,43 @@
+\begin{frame}[fragile]
+
+  {\Huge General Enhancements}
+
+  \vspace{10pt}
+
+\end{frame}
+
+\begin{frame}[fragile]{General Enhancements}
+  \textbf{Build System}
+  \begin{itemize}
+  \item Always turn on {\ttfamily INST\_MEMSPACE\_HOSTSPACE} by default
+  \item Remove the configure output for the list of kernels being ETI
+  \end{itemize}\vspace{1em}
+
+  \textbf{Batched}\\
+  Adding {\ttfamily ConjTrans} support for the following kernels
+  \begin{itemize}
+  \item {\ttfamily KokkosBatched::TeamGemm}
+  \item {\ttfamily KokkosBatched::TeamVectorGemm}
+  \item {\ttfamily KokkosBatched::SerialTrsv}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{General Enhancements}
+  \textbf{Blas}\\
+  Refactor of {\ttfamily KokkosBlas::axpby} unification layer, importantly it avoids {\ttfamily Kokkos::deep\_copy()} in all cases.\\\vspace{1em}
+
+  \textbf{Sparse}
+  \begin{itemize}
+  \item Call {\ttfamily cusparseSpMV\_preprocess} unless a fast setup is required in the cusparse code paths of SpMV
+  \end{itemize}
+  
+\end{frame}
+
+%% \begin{frame}[fragile]{Batched}
+%% \end{frame}
+
+%% \begin{frame}[fragile]{BLAS/LAPACK}
+%% \end{frame}
+
+%% \begin{frame}[fragile]{Third Party Libraries}
+%% \end{frame}
