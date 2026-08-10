@@ -1,4 +1,4 @@
-[##](##) CI: Maintainers and Points of Contact
+## CI: Maintainers and Points of Contact
 
 ----
 
@@ -18,6 +18,7 @@ Notes:
   * Members of https://github.com/orgs/kokkos/teams/snl-ci-admin-authorized team have permissions to apply the label and trigger testing
     * Christian Trott : GH @crtott
     * Luc Berger-Verlat : GH @lucbv
+    * Carl Pearson : GH @cwpearson
     * Nathan Ellingwood : GH @ndellingwood
 
 * General CI: launching testing on SNL resources requires applying the label "SNL-CI-APPROVAL" by members of `snl-ci-authorized` for contributors external to `snl-ci-authorized`
@@ -69,7 +70,8 @@ CI job list reference:
 ### CEA
 
 Contacts:
-  * Paul Zehner : GH @pzehner
+  * Paul Gannay : GH @PaulGannay
+  * Yuuichi Asahi : GH @yasahi-hpc
 
 Nightly job list reference:
   [CDash Nightly](https://my.cdash.org/index.php?project=Kokkos&filtercount=2&showfilters=1&filtercombine=and&field1=groupname&compare1=63&value1=Nightly&field2=site&compare2=63&value2=cea)
