@@ -32,6 +32,10 @@ Establish a record of the configurations exercised by Kokkos CI.
 
 Make benchmark results produced by CI accessible from [benchmark results repository](https://github.com/kokkos/kokkos-benchmark-results).
 
+### Analyze and Review Expensive Tests
+
+Review most expensive unit tests and open issues when necessary to revise tests; analyze compilation costs of building Kokkos unit tests with clang-build analyzer.
+
 ### [Prospective] Set Up Warden Performance Tracking
 
 Deploy the Warden performance tracking tool and begin using it to review and monitor CI performance.
