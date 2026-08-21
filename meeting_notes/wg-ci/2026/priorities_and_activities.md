@@ -28,11 +28,11 @@ Improve the overall stability and predictability of CI.
 
 Establish a record of the configurations exercised by Kokkos CI.
 
-### Test and Publish Benchmark Results to the Repository
+### Test and Publish Benchmark Results to the Benchmark Repository
 
 Make benchmark results produced by CI accessible from [benchmark results repository](https://github.com/kokkos/kokkos-benchmark-results).
 
-### Set Up Warden Performance Tracking
+### [Prospective] Set Up Warden Performance Tracking
 
 Deploy the Warden performance tracking tool and begin using it to review and monitor CI performance.
 
