@@ -44,9 +44,93 @@ Mainly a carryover of old things but with some new additions:
 
 ## Requests to leadership
 
-some of us still are unsure how they should prioritize working on core vs on building and packaging
-How do we find out what the priorities/painpoints of our users are except the usual channels?
-
-# Notes
+* some of us still are unsure how they should prioritize working on core vs on building and packaging
+* How do we find out what the priorities/painpoints of our users are except the usual channels?
 
 # Attendance
+* Jacob
+* Cedric
+* Damien
+* Luc
+
+# Notes
+## Review of Achievements Since Last Meeting
+
+**Benchmarking activity**
+
+* Damien raised the question of whether the benchmarking effort fits within the
+  scope of the Build & Packaging WG.
+* Luc clarified that it is not a natural fit for this WG and could arguably
+  belong to the CI WG. However, there is currently no other place to host this
+  work, so it remains here for now.
+
+
+Went over completed items (Godbolt checklist, release streamlining, Spack
+recipe cleanup, etc.) were noted as progressing well, with the release process
+now running fairly seamlessly thanks to the checklists.
+
+---
+
+## Priorities for the Next Release (5.3)
+
+**New items added this cycle:**
+* Externalize mdspan and desul as external dependencies.
+* Coordinate with the CI WG on testing the develop branch via Spack (dependent
+  on having a unittest buildable against an external Kokkos).
+* Kokkos ecosystem without `nvcc_wrapper`: the amount of work required for
+  subpackages remains unclear; still at the estimation/first-step stage (WIP at
+  CExA).
+
+**Carryover priorities:**
+* Export the correct supported archs in Spack.
+* Establish a test for nightlies.
+
+---
+
+## Long-Term Plan
+
+* No change from previous meeting. Continues to track `planning.md` and
+  `wishlist.md`.
+
+---
+
+## Compiler Explorer (Godbolt)
+* Compile and link flags are being stripped, forcing users to add them manually. This is particularly problematic for Kokkos + CUDA builds.
+* Relaxed constexpr was added behind the scenes, but communication with the Godbolt developers has been difficult.
+* Godbolt is a volunteer organization, and it is not clear how best to engage with them to resolve these issues.
+
+**Action:** We need to re-establish contact with the Godbolt developers
+regarding CUDA support and flag handling.
+
+---
+
+## Open Problems / Discussion Points
+
+* Supported archs export in Spack is currently incorrect, and it is unclear how
+  to fix it without breaking many downstream packages.
+
+---
+
+## Requests to Leadership
+
+**how to prioritize work on core versus build & packaging**
+* chairs get to shape wg priorities
+* subpackage leaders can echo them at developer meetings
+
+
+**identify priorities and pain points of our users**
+* prepare survey and determine what is the best audience
+* disseminate to all individual user or reach out to code teams?
+
+
+**Action:** Add a Build & Packaging WG item to the agenda of the upcoming core dev meeting.
+
+---
+
+## Suggested follow-ups before next meeting:
+
+* Decide on a longer-term home for the benchmarking effort (Build & Packaging vs. CI WG).
+* Re-engage Godbolt developers on CUDA flags / linker behavior.
+* Feedback on placement of the WG item on the core dev meeting agenda.
+
+
