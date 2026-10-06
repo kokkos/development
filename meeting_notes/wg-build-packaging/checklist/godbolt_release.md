@@ -1,3 +1,5 @@
+0. **Think about if the current release needs to be on Godbolt. E.g. not all bug fix releases are relevant. Use your own judgement**
+    
 1. **Update repository [compiler-explorer/infra](https://github.com/compiler-explorer/infra)**
 
 - [ ] In the file `bin/yaml/libraries.yaml`, add a new version entry in `libraries:c++:kokkos:targets:x.y.z` and `libraries:cuda:kokkos-cuda:targets:x.y.z`
