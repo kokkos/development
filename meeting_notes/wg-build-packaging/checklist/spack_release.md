@@ -1,7 +1,7 @@
 1. **Update `kokkos` package**:
    - [ ] Add a new version entry: `version("x.y.z", sha256="checksum_of_kokkos_x.y.z.tar.gz")`.
    - [ ] Check `FIXME` and `TODO`
-   - [ ] Ensure dependencies are up to date.
+   - [ ] Ensure dependencies are up to date (ex: mdspan).
    - [ ] Ensure variants are up to date.
    - [ ] Ensure architectures mapping is up to date.
    - [ ] Check if variants default values are up to date.
@@ -10,8 +10,13 @@
    - [ ] Add a new version entry: `version("x.y.z", sha256="checksum_of_kokkos_kernels_x.y.z.tar.gz")`.
    - [ ] Ensure dependencies are up to date.
    - [ ] Ensure variants are up to date.
+
+3. **Update `mdspan` package**:
+   - [ ] Add a new version entry: `version("x.y.z", sha256="checksum_of_mdspan_x.y.z.tar.gz")`.
+   - [ ] Ensure dependencies are up to date.
+   - [ ] Ensure variants are up to date.
    
-3. **Update `kokkos-tools` package**:
+4. **Update `kokkos-tools` package**:
    - [ ] Add a new version entry: `version("x.y.z", sha256="checksum_of_kokkos_tools_x.y.z.tar.gz")`.
    - [ ] Ensure dependencies are up to date.
    - [ ] Ensure variants are up to date.
