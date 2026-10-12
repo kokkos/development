@@ -1,6 +1,7 @@
 # Kokkos EcoSystem Release Briefing Preparation
 
 ## List of previous release managers
+- 5.2 Nicolas Morales
 - 5.1 Seyong Lee
 - 5.0 Trévis Morvany
 - 4.7 Dong Hun Lee
@@ -9,7 +10,7 @@
 - 4.4 Conrad Clevenger
 - 4.3 Nevin Liber
 - Previously Damien Lebrun-Grandie
-  
+
 ## Summary
 - [Step 0](#step-0-announce-release-candidate): Announce release candidate
 - [Step 1](#step-1-make-changelogmd-ready): Make CHANGELOG.md ready
@@ -31,15 +32,36 @@
 
 ## Step 0: Announce release candidate
 
-When the release candidate branch is forked from `develop`, this can be announced on #general in slack to allow users to test the new release ahead of time. This should ideally be done when the feature set for the release is already fixed.
+When the release candidate branch is forked from `develop` **for both Kokkos Core and Kokkos Kernels**, this can be announced on #general in slack to allow users to test the new release ahead of time. This should ideally be done when the feature set for the release is already fixed.
 Once the feature set is fixed, ask Nathan to start the Trilinos testing - it always takes longer than expected.
+
+Example message:
+
+```md
+@here :rocket: Kokkos & Kokkos Kernels x.x.x Release Candidates are now live!
+
+The release-candidate-x.x.x branches have been created for both repositories. While we’ve started integration testing with Trilinos and other partner libraries, community feedback is essential to ensuring a stable final release.
+
+Key Highlights in x.x.x:
+
+* Point 1
+* Point 2
+
+
+Timeline:
+We plan to tag the final x.x.x releases within two weeks from now.
+Please pull the RC branches and test them against your applications. If you encounter any regressions or build issues, please report them via the GitHub issue trackers!
+
+The Kokkos Team
+```
 
 ## Step 1: Make CHANGELOG.md ready
 
-Normally, a draft of the changelog specific for this version already exists as a pinned issue, but it's up to the contributor of the PR to fill it. The document may be out-of-sync, so it's important to check if nothing is missing (the process is tedious, it consists in checking merge commits since the last release). The description entered by the contributors may be vague or obscure, so don't hesitate to tag them for a clarification.
+Normally, a draft of the changelog specific for this version already exists as a pinned issue, but it's up to the contributor of the PR to fill it. The document may be out-of-sync, so it's important to check if nothing is missing (the process is tedious, it consists in checking merge commits since the last release). The description entered by the contributors may be vague or obscure, so don't hesitate to tag them for a clarification. The `check_changelog.sh` script can be used to help auditing the changelog (Note from Nic: you likely have to edit some hard-coded git tags, sorry! Please feel free to edit the script as needed).
 
 You will need this changelog as a base to track the progress of the release materials.
 Don't spend too much time on wording, this can be finalized when the PR to merge the information from the issue into the changelog gets created.
+Create a PR for the RC to update the changelog and track down any missing contributions to the changelog. Delegate feature/bugfix authors of missing or unclear entries to make suggested changes to the PR to update the changelog.
 
 When going through the changelog, it will become apparent that a lot of changes are missing documentation. Track the corresponding people down and get them to open a PR for that. Don't shy away from haunting them and assigning people to review these PRs in the dev-meeting. The documentation repo has a `Required for upcoming release` to track these.
 
@@ -53,7 +75,7 @@ The release briefing should take place maximum 2 weeks after the release, and th
 
 ## Step 4: Create "empty" slides in Tutorials/ReleaseBriefings
 
-In the [kokkos-tutorials](https://github.com/kokkos/kokkos-tutorials/tree/main/Content/ReleaseBriefings) repo:
+In the [development](https://github.com/kokkos/development/tree/main/ReleaseBriefings) repo:
 
 - Add a `release-yz.tex` file, where `yz` is the release version.  You can base it on the previous `release-wx.tex` file.
 - Update the Makefile by adding a build line for `release-yz` and changing the default rule to build `release-yz`.
@@ -69,11 +91,13 @@ Take the [CHANGELOG.md](https://github.com/kokkos/kokkos/blob/develop/CHANGELOG.
 
 - Update the **documentation**: if the merged PRs of the changelog have changed the API or any significant aspect of Kokkos, then the documentation should be updated. As the repository for the documentation is separated from the code itself, this step can be easily missed.
 - Prepare **slides** for the briefing: this is about describing in one line what was done in the PR. If the PR is impactful, it can go up to a couple of slides.
-- Commit to **presenting**: which is presenting the slides during the release briefing. 
+- Commit to **presenting**: which is presenting the slides during the release briefing.
 
 The documentation is assigned to the contributor of the PR.
 
 The slides are assigned on a section basis: for each section of the changelog, designate someone who consequently contributed to it. We don't want to over burden some of the more prolific contributors, so feel free to spread out the work (you can ask for volunteers on nucleus). Also, depending on schedules, some folks might be able to write the slides but not present.  Be flexible, but the important thing is to have a commitment for each of these things.  Set a deadline for this work.
+
+Pay attention that people who will make the slides can write on the private repository! Ask on nucleus to grant them the rights.
 
 The presenting is usually assigned to the same people who did the slides. You may reduce the number of speakers by giving them more than one section.
 
