@@ -25,7 +25,7 @@ To ensure that the changes that were made in the build systems of the libraries 
 ### TPLs
 
  - [ ] Update to google benchmark 1.9.5 PR [#9562](https://github.com/kokkos/kokkos/pull/9562), this probably does not impact Spack but it injects some flags to build the TPL so let us check that it works okay with Spack?
-
+ - [ ] Add support for external Kokkos mdspan
 
 ## Kokkos Kernels
 
