@@ -1,4 +1,4 @@
-## Agenda:
+## Email invite:
 The rally time finding tool sees this as the slot that most people have time.
 This is mainly a meeting to develop a workplan for memorypools with Kokkos.
 
