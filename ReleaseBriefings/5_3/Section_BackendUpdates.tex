@@ -49,8 +49,11 @@
 \begin{frame}[fragile]
 
   {\Huge CUDA}
-
-  \vspace{10pt}
+  \begin{itemize}
+    \item Add support for NVIDIA Rubin GPU architecture
+	\item Increase the grid size used for reductions with \texttt{MDRangePolicy} to improve performance
+	\item Fix response file handling of nvcc\_wrapper by removing quotes
+  \end{itemize}
 
 \end{frame}
 
@@ -59,8 +62,10 @@
 \begin{frame}[fragile]
 
   {\Huge HIP}
-
-  \vspace{10pt}
+  \begin{itemize}
+	  \item Increase the grid size used for reductions with \texttt{MDRangePolicy} to improve performance
+	  \item Add Hygon DCU architecture support (\texttt{ARCH\_HYGON\_GFX936})
+  \end{itemize}
 
 \end{frame}
 
@@ -69,8 +74,11 @@
 \begin{frame}[fragile]
 
   {\Huge SYCL}
-
-  \vspace{10pt}
+  \begin{itemize}
+    \item Introspect TeamPolicy kernels for maximum team size avoiding invalid choices in the dispatch heuristic
+	\item Reduce device memory footprint of team scratch pads
+	\item Add Intel Battlemage GPU architecture
+  \end{itemize}
 
 \end{frame}
 
@@ -79,8 +87,9 @@
 \begin{frame}[fragile]
 
   {\Huge OpenACC}
-
-  \vspace{10pt}
+  \begin{itemize}
+    \item Remove the Clacc compiler and AMD GPU support
+  \end{itemize}
 
 \end{frame}
 
@@ -89,8 +98,9 @@
 \begin{frame}[fragile]
 
   {\Huge HPX}
-
-  \vspace{10pt}
+  \begin{itemize}
+	  \item Fix default instance destruction in \texttt{Kokkos::finalize} to prevent memory leaks
+  \end{itemize}
 
 \end{frame}
 
