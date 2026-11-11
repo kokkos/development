@@ -11,6 +11,7 @@ To ensure that the changes that were made in the build systems of the libraries 
  - [ ] Add support for Vera PR [#9630](https://github.com/kokkos/kokkos/pull/9630)
  - [ ] Add support for Rubin PR [#9395](https://github.com/kokkos/kokkos/pull/9395)
  - [ ] Add support for Hygon PR [#9403](https://github.com/kokkos/kokkos/pull/9403)
+ - [ ] Add support for Intel Battlemage PR [#9410](https://github.com/kokkos/kokkos/pull/9410)
 
 ### Backend updates
 
