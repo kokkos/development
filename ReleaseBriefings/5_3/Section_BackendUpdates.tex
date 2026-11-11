@@ -1,0 +1,107 @@
+%==========================================================================
+
+\begin{frame}[fragile]
+
+  {\Huge Backend Updates}
+
+  \vspace{10pt}
+
+\end{frame}
+
+%==========================================================================
+
+% Examples
+
+% note: always keep the [fragile] for your frames!
+
+%\begin{frame}[fragile]{Example list}
+%  \begin{itemize}
+%      \item Item 1
+%      \item Item 2 with some \texttt{code}
+%      \begin{itemize}
+%        \item Sub-item 2.1
+%        \item Sub-item 2.2
+%      \end{itemize}
+%  \end{itemize}
+%\end{frame}
+
+%\begin{frame}[fragile]{Example code}
+%    \begin{code}[keywords={std}]
+%        #include <iostream>
+%
+%        int main() {
+%            std::cout << "hello world\n";
+%        }
+%    \end{code}
+%\end{frame}
+
+%\begin{frame}[fragile]{Example table}
+%    \begin{center}
+%        \begin{tabular}{l|l}
+%            a & b \\\hline
+%            c & d
+%        \end{tabular}
+%    \end{center}
+%\end{frame}
+
+%==========================================================================
+
+\begin{frame}[fragile]
+
+  {\Huge CUDA}
+  \begin{itemize}
+    \item Add support for NVIDIA Rubin GPU architecture
+	\item Increase the grid size used for reductions with \texttt{MDRangePolicy} to improve performance
+	\item Fix response file handling of nvcc\_wrapper by removing quotes
+  \end{itemize}
+
+\end{frame}
+
+%==========================================================================
+
+\begin{frame}[fragile]
+
+  {\Huge HIP}
+  \begin{itemize}
+	  \item Increase the grid size used for reductions with \texttt{MDRangePolicy} to improve performance
+	  \item Add Hygon DCU architecture support (\texttt{ARCH\_HYGON\_GFX936})
+  \end{itemize}
+
+\end{frame}
+
+%==========================================================================
+
+\begin{frame}[fragile]
+
+  {\Huge SYCL}
+  \begin{itemize}
+    \item Introspect TeamPolicy kernels for maximum team size avoiding invalid choices in the dispatch heuristic
+	\item Reduce device memory footprint of team scratch pads
+	\item Add Intel Battlemage GPU architecture
+  \end{itemize}
+
+\end{frame}
+
+%==========================================================================
+
+\begin{frame}[fragile]
+
+  {\Huge OpenACC}
+  \begin{itemize}
+    \item Remove the Clacc compiler and AMD GPU support
+  \end{itemize}
+
+\end{frame}
+
+%==========================================================================
+
+\begin{frame}[fragile]
+
+  {\Huge HPX}
+  \begin{itemize}
+	  \item Fix default instance destruction in \texttt{Kokkos::finalize} to prevent memory leaks
+  \end{itemize}
+
+\end{frame}
+
+%==========================================================================
