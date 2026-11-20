@@ -1,0 +1,91 @@
+%==========================================================================
+
+\begin{frame}[fragile]
+
+  {\Huge Breaking Changes}
+
+  \vspace{10pt}
+
+\end{frame}
+
+
+\begin{frame}[fragile]{Incompatibilities}
+  \begin{itemize}
+      \item Google Benchmark minimum required version is now 1.9.5
+      \item Remove workaround for invalid use of View of Views that causes program hang on destruction
+      \begin{itemize}
+        \item This workaround was introduced in 4.4 (2 years ago)
+      \end{itemize}
+      \item Relax semantics of atomic floating-point min/max for values comparing equal
+      \begin{itemize}
+        \item Negative and positive zero are now treated as equivalent; there are now now guarantees on the sign of the result with +0 and -0 as arguments to \texttt{atomic\_fetch\_\{min,max\}}
+      \end{itemize}
+      \item Default label from \texttt{TypeInfo} no longer provided when empty string is explicitly passed as label to parallel dispatch operations
+      \item Remove \texttt{View::specialize} trait that was tied to legacy View
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]{Deprecations and Removals}
+  \begin{itemize}
+      \item Code guarded by \texttt{DEPRECATED\_CODE\_4} is now removed!
+      \item Deprecated AMD GPU architecture names were removed. Use the replacements:
+      \begin{itemize}
+        \item \texttt{Kokkos\_ARCH\_VEGA} $\rightarrow$ Use specific architecture
+        \item \texttt{Kokkos\_ARCH\_VEGA90A} $\rightarrow$ \texttt{Kokkos\_ARCH\_AMD\_GFX90A}
+        \item \texttt{Kokkos\_ARCH\_VEGA908} $\rightarrow$ \texttt{Kokkos\_ARCH\_AMD\_GFX908}
+        \item \texttt{Kokkos\_ARCH\_VEGA906} $\rightarrow$ \texttt{Kokkos\_ARCH\_AMD\_GFX906}
+        \item \texttt{Kokkos\_ARCH\_NAVI} $\rightarrow$ Use specific architecture
+        \item \texttt{Kokkos\_ARCH\_NAVI1030} $\rightarrow$ \texttt{Kokkos\_ARCH\_AMD\_GFX1030}
+        \item \texttt{Kokkos\_ARCH\_NAVI1100} $\rightarrow$ \texttt{Kokkos\_ARCH\_AMD\_GFX1100}
+      \end{itemize}
+      \item Remove deprecated \texttt{KOKKOS\_OPT\_RANGE\_AGGRESSIVE\_VECTORIZATION}
+      \begin{itemize}
+        \item Use \texttt{KOKKOS\_ENABLE\_AGGRESSIVE\_VECTORIZATION} instead
+      \end{itemize}
+      \item Remove Clacc support in the OpenACC backend as it is not maintained
+      \item \texttt{MDRangePolicy} now has private members
+      \begin{itemize}
+        \item When \texttt{KOKKOS\_ENABLE\_DEPRECATED\_CODE\_5} is defined, all members stay public
+      \end{itemize}
+  \end{itemize}
+\end{frame}
+
+
+%==========================================================================
+
+% Examples
+
+% note: always keep the [fragile] for your frames!
+
+%\begin{frame}[fragile]{Example list}
+%  \begin{itemize}
+%      \item Item 1
+%      \item Item 2 with some \texttt{code}
+%      \begin{itemize}
+%        \item Sub-item 2.1
+%        \item Sub-item 2.2
+%      \end{itemize}
+%  \end{itemize}
+%\end{frame}
+
+%\begin{frame}[fragile]{Example code}
+%    \begin{code}[keywords={std}]
+%        #include <iostream>
+%
+%        int main() {
+%            std::cout << "hello world\n";
+%        }
+%    \end{code}
+%\end{frame}
+
+%\begin{frame}[fragile]{Example table}
+%    \begin{center}
+%        \begin{tabular}{l|l}
+%            a & b \\\hline
+%            c & d
+%        \end{tabular}
+%    \end{center}
+%\end{frame}
+
+%==========================================================================
