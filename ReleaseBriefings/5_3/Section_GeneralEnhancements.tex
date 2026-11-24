@@ -10,6 +10,96 @@
 
 %==========================================================================
 
+\begin{frame}[fragile]{General Enhancements: Views}
+  \begin{itemize}
+    \item Complete removal of \texttt{Kokkos\_ENABLE\_IMPL\_VIEW\_LEGACY}
+    \begin{itemize}
+      \item[] \texttt{mdspan} implementation of views is now the only view implementation 
+    \end{itemize}
+    \vfill
+    \item \texttt{View::size\_type} now aligns with \texttt{mdspan} \texttt{extents\_type::size\_type}
+    \begin{itemize}
+      \item[] Previously, \texttt{View::size\_type} was derived from \texttt{View::memory\_space::size\_type}
+    \end{itemize}
+    \vfill
+    \item \texttt{full\_extent} is now officially supported as subview slice parameter
+    \begin{itemize}
+      \item[] Equivalent to \texttt{ALL}
+    \end{itemize}
+    \vfill
+    \item \texttt{DualView} now supports \texttt{mdspan}-style template arguments
+    \begin{itemize}
+      \item[] This enables controlling \texttt{index\_type} for \texttt{DualView}
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{General Enhancements: \texttt{Kokkos::Experimental::[b]half\_t}}
+  \begin{itemize}
+    \item Now providing \texttt{KOKKOS\_HAS\_NATIVE\_[B]HALF\_TYPE} macros to detect true half-precision floating-point support
+      \begin{code}[keywords={include,check_cxx_symbol_exists}]
+include(CheckCXXSymbolExists)
+check_cxx_symbol_exists(
+  KOKKOS_HAS_NATIVE_[B]HALF_TYPE # Macro name
+  "Kokkos_Macros.hpp"            # Header file
+  KOKKOS_CORE_HAS_[B]HALF_T)     # Result variable
+      \end{code}
+    \vfill
+    \item Allow using \texttt{std:float16\_t} and \texttt{std::bfloat16\_t} in \texttt{Kokkos::Experimental::[b]half\_t}
+    \vfill
+    \item Now providing \texttt{std::common\_type} specializations for half-precision types
+    \begin{itemize}
+      \item[] Implements ISO C++ extended floating point rules
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{General Enhancements: \texttt{Kokkos::pair}}
+  \begin{itemize}
+    \item Added \texttt{std::tuple\_element}, \texttt{std::tuple\_size} and \texttt{get} support to \texttt{Kokkos::pair}
+    \begin{code}[keywords={make_pair,get,tuple_size_v,tuple_element_t,static_assert,decltype,auto,using}]
+auto kokkos_pair = Kokkos::make_pair(1.0, 2);
+using kk_pair_t = decltype(kokkos_pair);
+
+static_assert(std::tuple_size_v<kk_pair_t> == 2);
+static_assert(std::is_same_v<std::tuple_element_t<0, kk_pair_t>, 
+                             const double>);
+static_assert(std::is_same_v<std::tuple_element_t<1, kk_pair_t>,
+                             const int>);
+
+auto p0 = Kokkos::get<0>(kokkos_pair);
+auto p1 = Kokkos::get<1>(kokkos_pair);
+    \end{code}
+    \vfill
+    \item Added CTAD for \texttt{Kokkos::pair} from \texttt{std::pair}
+    \begin{code}[keywords={template,pair}]
+template <class T1, class T2>
+pair(const std::pair<T1, T2>&) -> pair<T1, T2>;
+    \end{code}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{General Enhancements: Misc}
+  \begin{itemize}
+    \item Added NVIDIA Vera CPU architecture: \texttt{Kokkos\_ARCH\_ARMV9\_VERA}
+    \vfill
+    \item \texttt{Kokkos\_ScopeGuard.hpp}, \texttt{Kokkos\_InitializeFinalize.hpp} are now public
+    \begin{itemize}
+      \item[] Much lighter weight than \texttt{Kokkos\_Core.hpp}, useful for translation units that don't need more functionality than provided in these headers
+    \end{itemize}
+    \vfill
+    \item \texttt{push\_finalize\_hook} is now thread-safe
+    \begin{itemize}
+      \item[] Can be called concurrently from multiple threads without additional synchronization.
+    \end{itemize}
+    \vfill
+    \item Added C++20 modules support for \texttt{Kokkos::Experimental::Graph}
+    \begin{itemize}
+      \item[] \texttt{import kokkos.graph}
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
 % Examples
 
 % note: always keep the [fragile] for your frames!
