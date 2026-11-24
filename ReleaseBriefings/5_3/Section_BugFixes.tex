@@ -8,7 +8,75 @@
 
 \end{frame}
 
+
+\begin{frame}[fragile]{Correctness}
+  \begin{itemize}
+    \item CUDA, HIP, SYCL: Respect a non-zero start index in \texttt{parallel\_scan} on a \texttt{ThreadVectorRange}
+    \item Fix using STL-like algorithms with ranges exceeding $2^{31}$ elements on GPUs
+    \item CUDA, HIP, SYCL: Return the neutral element from \texttt{parallel\_scan} with a return value when the work range is empty
+    \item CUDA, HIP: Avoid division by zero in reductions with fewer than 32 threads per block
+    \item MSVC: Fix race conditions if mixing 16-byte \texttt{atomic\_exchange} with other 16-byte atomic operations \textcolor{red}{(remove?)}
+  \end{itemize}
+\end{frame}
+
 %==========================================================================
+
+\begin{frame}[fragile]{Fix \texttt{parallel\_scan} edge cases on GPUs}
+  On CUDA, HIP, SYCL, two \texttt{parallel\_scan} edge cases produced incorrect results
+  \begin{itemize}
+    \item \textbf{Problem}: A \texttt{ThreadVectorRange} scan ignored its start index and called the lambda with indices \textbf{outside} the requested range.
+    \item \textbf{Problem}: A scan over an empty range never launched a kernel, so the return value was \textbf{never written}.
+  \end{itemize}
+  \begin{code}[keywords={Kokkos}]
+    Kokkos::parallel_for(team_policy,
+        KOKKOS_LAMBDA(member_type team) {
+            // ran over 0..19, not 10..19
+            Kokkos::parallel_scan(
+                Kokkos::ThreadVectorRange(team, 10, 20), ...);
+    });
+
+    // total remained -1, now 0
+    int total = -1;
+    Kokkos::parallel_scan(Kokkos::RangePolicy<>(0, 0),
+                          functor, total);
+    \end{code}
+\end{frame}
+
+%==========================================================================
+
+\begin{frame}[fragile]{Robustness}
+  \begin{itemize}
+    \item Fix filling views with floating-point special values
+    \begin{itemize}
+      \item Filling with a signaling NaN no longer raises \texttt{FE\_INVALID}
+      \item Filling with \texttt{-0.0} no longer stores \texttt{+0.0}
+    \end{itemize}
+    \item SIMD: Fix masked \texttt{unchecked\_scatter\_to} and \texttt{partial\_scatter\_to} with \texttt{simd\_abi::scalar} writing to the masked-off lane
+    \item Fix compile or runtime failures in \texttt{RangePolicy} \texttt{parallel\_for} with a 16-bit \texttt{IndexType}
+  \end{itemize}
+\end{frame}
+
+%==========================================================================
+
+\begin{frame}[fragile]{Build}
+  \begin{itemize}
+    \item Support building with clang++ using CUDA 13 with CMake $<$ 3.31.9
+    \item Fix missing and obsolete architecture defines in the CMake configuration
+    \item Fix compiling host \texttt{parallel\_reduce} into a \texttt{View} in \texttt{SharedSpace}
+    \end{itemize}
+    \begin{code}[keywords={Kokkos}]
+Kokkos::View<double, Kokkos::SharedSpace> result("result");
+Kokkos::parallel_reduce(
+    Kokkos::RangePolicy<Kokkos::DefaultHostExecutionSpace>(0, n),
+    KOKKOS_LAMBDA(int i, double & sum) { sum += x(i); },
+    result); // Before 5.3: fails to compile
+    \end{code}
+    \begin{itemize}
+    \item Add missing \texttt{TeamPolicy::\{team,thread\}\_scratch\_size} member functions for some backends
+    %% \item HIP: Fix \texttt{Kokkos::abort} on Windows
+    %% \item Fix compiling modules with clang++-22
+  \end{itemize}
+\end{frame}
 
 % Examples
 
