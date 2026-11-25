@@ -105,3 +105,19 @@
 \end{frame}
 
 %==========================================================================
+
+\begin{frame}[fragile]
+
+  {\Huge OpenMP}
+  \begin{itemize}
+    \item Obtain auto-vectorization in GCC via the following steps:
+    \begin{itemize}
+      \item Set \texttt{MDRangePolicy::index\_type} to be a signed integer type (this is the case by default)
+      \item Choose user defined kernel's index arguments to be the same type
+    \end{itemize}
+    \item Issue filed in GCC Bugzilla
+  \end{itemize}
+
+\end{frame}
+
+%==========================================================================
