@@ -144,15 +144,16 @@
 double scalar_exp;
 Kokkos::single("ReturnValue", Kokkos::SinglePolicy{},
   KOKKOS_LAMBDA (double& res) {
-    res = Kokkos::exp(scalar());
+    res = Kokkos::exp(2.0);
 }, scalar_exp);
-std::cout << "scalar_exp:" << scalar_exp << std::endl;
       \end{code}
 
       \vspace{1em}
 
       Output of simple timer:
-      \begin{code}[keywords={KOKKOS_LAMBDA,parallel_for,single, SinglePolicy}]
+      \begin{code}
+KokkosP: Simple Kernel Timer Library Initialized (sequence is 0, version: 20261022)
+
 (Type)   Total Time, Call Count, Avg. Time per Call, %Total Time in Kernels, %Total Program Time
 -------------------------------------------------------------------------
 - ReturnValue
