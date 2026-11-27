@@ -1,0 +1,199 @@
+%==========================================================================
+
+\begin{frame}[fragile]
+
+  {\Huge Feature highlights}
+
+  \vspace{10pt}
+
+\end{frame}
+
+%==========================================================================
+
+\begin{frame}[fragile]{\texttt{DefaultMemorySpace} and \texttt{DefaultHostMemorySpace}}
+  When needing to access the default memory space, we had to type:
+  \begin{itemize}
+    \item \texttt{Kokkos::DefaultExecutionSpace::memory\_space}
+    \item \texttt{Kokkos::DefaultHostExecutionSpace::memory\_space}
+  \end{itemize}
+  \vspace{1em}
+  \pause
+  In 5.3, we introduce two new alias to make user code simpler:
+  \begin{itemize}
+    \item \texttt{Kokkos::DefaultMemorySpace}
+    \item \texttt{Kokkos::DefaultHostMemorySpace}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{\texttt{Kokkos::Single}}
+  It is common to need to execute serial code on the device when writting test or doing initialization.
+
+    \begin{code}[keywords={KOKKOS_LAMBDA,parallel_for,single,parallel_reduce}]
+  Kokkos::parallel_for("Init", 1,
+      KOKKOS_LAMBDA(int) {
+          Kokkos::printf("Init\n");
+      }
+  );
+
+  bool test_result;
+  Kokkos::parallel_reduce("Run test", 1,
+       KOKKOS_LAMBDA(int, bool &res) {
+          res = run_test();
+      },
+      test_result
+  );
+    \end{code}
+\end{frame}
+
+\begin{frame}[fragile]{\texttt{Kokkos::Single}}
+  Neither \texttt{parallel\_for} nor \texttt{parallel\_reduce} are the correct tool for this
+
+  \begin{columns}
+    \begin{column}{0.5\linewidth}
+      \begin{code}[keywords={KOKKOS_LAMBDA,parallel_for,single}]
+  Kokkos::parallel_for("Init", 1,
+      KOKKOS_LAMBDA(int) {
+          Kokkos::printf("Init\n");
+      }
+  );
+
+  bool test_result;
+  Kokkos::parallel_reduce("Run test", 1,
+      KOKKOS_LAMBDA(int, bool &res) {
+          res = run_test();
+      },
+      test_result
+  );
+      \end{code}
+    \end{column}
+    \begin{column}{0.5\linewidth}
+      \begin{itemize}
+        \item Need to give \texttt{RangePolicy}
+        \item Useless index parameter for the lambda
+        \item Strong requirements for the return type: needs an \texttt{operator+()} and a \texttt{join} function.
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{\texttt{Kokkos::Single}}
+  New \texttt{Kokkos::single} parallel construct, which launches only a single thread
+
+  \begin{columns}
+    \begin{column}{0.5\linewidth}
+      \begin{code}[keywords={KOKKOS_LAMBDA,parallel_for,single}]
+  Kokkos::single("Init",
+      KOKKOS_LAMBDA() {
+          Kokkos::printf("Init\n");
+      }
+  );
+
+  bool test_result;
+  Kokkos::single("Run test",
+      KOKKOS_LAMBDA(bool &res) {
+          res = run_test();
+      },
+      test_result
+  );
+      \end{code}
+    \end{column}
+    \begin{column}{0.5\linewidth}
+      \begin{itemize}
+        \item Implicit (0,1) range
+        \item No index parameter for the lambda
+        \item Only requierement for the return type is that it should be default constructible
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{\texttt{Kokkos::SinglePolicy}}
+  \begin{columns}
+    \begin{column}{0.6\linewidth}
+      \begin{code}[keywords={KOKKOS_LAMBDA,parallel_for,single, SinglePolicy}]
+  Kokkos::single("Init",
+    Kokkos::SinglePolicy<
+        Kokkos::DefaultHostExecutionSpace>(),
+    KOKKOS_LAMBDA() {
+        Kokkos::printf("Init\n");
+    }
+  );
+
+  Kokkos::DefaultHostExecutionSpace exec_space;
+  Kokkos::single("Init",
+    Kokkos::SinglePolicy(exec_space),
+    KOKKOS_LAMBDA() {
+        Kokkos::printf("Init\n");
+    }
+  );
+      \end{code}
+    \end{column}
+    \begin{column}{0.4\linewidth}
+      \begin{itemize}
+        \item \texttt{Kokkos::single} can take a policy explicitly
+        \item Only available policy is \texttt{Kokkos::SinglePolicy}
+        \item Can be used to specify execution space or WorkTag
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{\texttt{Kokkos::single} and Kokkos tools}
+  \texttt{Kokkos::tools} is now aware of \texttt{Kokkos::single}:
+      \begin{code}[keywords={KOKKOS_LAMBDA,parallel_for,single, SinglePolicy}]
+double scalar_exp;
+Kokkos::single("ReturnValue", Kokkos::SinglePolicy{},
+  KOKKOS_LAMBDA (double& res) {
+    res = Kokkos::exp(2.0);
+}, scalar_exp);
+      \end{code}
+
+      \vspace{1em}
+
+      Output of simple timer:
+      \begin{code}
+KokkosP: Simple Kernel Timer Library Initialized (sequence is 0, version: 20261022)
+
+(Type)   Total Time, Call Count, Avg. Time per Call, %Total Time in Kernels, %Total Program Time
+-------------------------------------------------------------------------
+- ReturnValue
+ (Single)  0.000011 1 0.000011 92.000000 11.645570
+      \end{code}
+\end{frame}
+
+
+% Examples
+
+% note: always keep the [fragile] for your frames!
+
+%\begin{frame}[fragile]{Example list}
+%  \begin{itemize}
+%      \item Item 1
+%      \item Item 2 with some \texttt{code}
+%      \begin{itemize}
+%        \item Sub-item 2.1
+%        \item Sub-item 2.2
+%      \end{itemize}
+%  \end{itemize}
+%\end{frame}
+
+%\begin{frame}[fragile]{Example code}
+%    \begin{code}[keywords={std}]
+%        #include <iostream>
+%
+%        int main() {
+%            std::cout << "hello world\n";
+%        }
+%    \end{code}
+%\end{frame}
+
+%\begin{frame}[fragile]{Example table}
+%    \begin{center}
+%        \begin{tabular}{l|l}
+%            a & b \\\hline
+%            c & d
+%        \end{tabular}
+%    \end{center}
+%\end{frame}
+
+%==========================================================================
